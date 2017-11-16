@@ -9,6 +9,7 @@
             "cryptocurrency" : "StringValue",
             "priceMargin" : "IntValue - represents the closest rounding digit the user sets for his spendings",
             "investmentPeriod" : "IntValue - period the user chose to save over and then invest. (Investments frequency)",
+            "piggyBitBalance" : "longValue - represents how much money has been accumulated. Zeros up after investment is done at the end of each period"
             "eventLogs" : "List<eventLog> - list of a new class EventLog which respresent each investment done by user"
             }
 }
