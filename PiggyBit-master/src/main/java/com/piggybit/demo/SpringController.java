@@ -29,6 +29,7 @@ import com.mongodb.MongoClient;
 import com.piggybit.models.SettingsForm;
 import com.piggybit.models.User;
 import com.piggybit.mongoDB.UserRepository;
+import com.piggybit.mongoDB.dbSeeder;
 
 import groovy.util.logging.Slf4j;
 
