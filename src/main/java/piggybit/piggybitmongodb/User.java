@@ -15,12 +15,33 @@ public class User {
     private String email;
     private String bankingApiAccount;
     private String coinbaseAccount;
+    private String refreshToken;
+    private String accessToken;
+    private String authorizationCode;
     private String cryptocurrency;
     private int priceMargin;
     private int intesmentPeriod;
     private List<eventLog> eventLogs;
 
     protected User() {
+    }
+
+    public User(String id, String userName, String password, String firstName, String lastName, String email, String bankingApiAccount, String coinbaseAccount, String refreshToken, String accessToken, String authorizationCode, String cryptocurrency, int priceMargin, int intesmentPeriod, List<eventLog> eventLogs) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.bankingApiAccount = bankingApiAccount;
+        this.coinbaseAccount = coinbaseAccount;
+        this.refreshToken = refreshToken;
+        this.accessToken = accessToken;
+        this.authorizationCode = authorizationCode;
+        this.cryptocurrency = cryptocurrency;
+        this.priceMargin = priceMargin;
+        this.intesmentPeriod = intesmentPeriod;
+        this.eventLogs = eventLogs;
     }
 
     public User(String userName, String password, String firstName, String lastName, String email, String bankingApiAccount, String coinbaseAccount, String cryptocurrency, int priceMargin, int intesmentPeriod, List<eventLog> eventLogs) {
@@ -133,5 +154,28 @@ public class User {
     public void addEventLogs(eventLog eventLogs) {
         this.eventLogs.add(eventLogs);
     }
-}
 
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setAuthorizationCode(String authorizationCode) {
+        this.authorizationCode = authorizationCode;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public String getAuthorizationCode() {
+        return authorizationCode;
+    }
+}
