@@ -3,6 +3,9 @@ package com.piggybit.demo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import com.piggybit.models.User;
+import com.piggybit.mongoDB.UserRepository;
+import com.piggybit.mongoDB.dbSeeder;
 
 @RestController
 @RequestMapping("/rest/users")
