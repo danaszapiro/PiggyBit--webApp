@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Register</title>
-    <link rel="stylesheet" href=""/>
+    <meta charset="UTF-8">
+    <title>Preferences</title>
     <script type="text/javascript" src="javascript.js"></script>
-    <style>
+        <style>
     @import url(https://fonts.googleapis.com/css?family=Roboto:400,500);
 
 html{
@@ -17,7 +16,7 @@ html{
 .box{
 	position: relative;
 	margin: auto;
-	height: 365px;
+	height: 400px;
   top: 40px;
 	left: 0;
 	z-index: 200;
@@ -166,55 +165,46 @@ label 				 {
 </head>
 <body>
 <div class="box">
-	<form action="#" th:action="@{/settings}" th:object="${user}" method="post">
-    <h1 id="logintoregister">Login</h1>
-    <div class="group">
-        <input class="inputMaterial" id ='userName' th:field:="*{userName}" type="text" th:required="required"/>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Username</label>
-    </div>
-    <div class="group">
-        <input class="inputMaterial" id="password" th:field="*{password}" type="password" th:required="required"/>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Password</label>
-    </div>
-    
-
-    <button id="buttonlogintoregister">Login</button>
-    <p id="plogintoregister">New to PiggyBit?</p><p id="textchange" onclick="register()">Register</p>
+    <form action="#" th:action="@{/submit}" th:object="${submissionForm}" method="post">
+        <h1 id="logintoregister">Prefrences</h1>
+        <div class="group">
+            <select class="inputMaterial" id ='crypto' th:field:="*{preferredCrypto}" type="text" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Crypto</label>
+                <option value="bitcoin">Bitcoin</option>
+                <option value="ether">Ethereum</option>
+                <option value="litecoin">Litecoin</option>
+            </select>
+        </div>
+        <div class="group">
+            <select class="inputMaterial" id="Currency" th:field="*{currency}" placeholdertext="Currency" type="password" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+                <option value="Euro">Euro</option>
+                <option value="AUD">AUD</option>
+            </select>
+        </div>
+        <div class="group">
+            <input class="inputMaterial" type="margin" th:field:="*{priceMargin}" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Price Margin</label>
+        </div>
+        <div class="group">
+            <select class="inputMaterial" type="period" th:field:="*{recurringPeriod}" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+                <option value="week">Every Week</option>
+                <option value="month">Monthly</option>
+                <option value="twomonth">Bi-Monthly</option>
+            </select>
+            </select>
+        </div>
+        <button id="buttonlogintoregister">Accept Changes</button>
     </form>
 </div>
 </body>
-<script type="text/javascript">
-var cont = 0;
-
-function register(){
-
-     cont++;
-
-		if(cont==1){
-		 	$('.box').animate({height:'1200px'}, 550);
-			$('.show').css('display','block');
-      $('.box').animate({width:'400px'}, 550);
-			$('#logintoregister').text('Register');
-			$('#buttonlogintoregister').text('Register');
-			$('#plogintoregister').text("Login");
-		}
-		else
-		{
-			$('.show').css('display','none');
-			$('.box').animate({height:'365px'}, 500);
-      $('.box').animate({width:'400px'}, 550);
-			$('#logintoregister').text('Login');
-			$('#buttonlogintoregister').text('Login');
-			$('#plogintoregister').text("New to PiggyBit?");
-			$('#textchange').text('Register');
-			cont = 0;
-		}
-}
-</script>
 </html>
-
-

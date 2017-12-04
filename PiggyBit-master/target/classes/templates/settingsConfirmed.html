@@ -165,8 +165,8 @@ label 				 {
 <body>
 <div class ="box">
 	<h1>Settings Confirmed</h1>
+	<p th:text="'Crypto currency requested: ' + ${crypto != null ? crypto : 'NOT FOUND'} "/>
     <p th:text="'Currency requested: ' + ${currency != null ? currency : 'NOT FOUND'} "/>
-    <p th:text="'Crypto currency requested: ' + ${preferredCrypto != null ? preferredCrypto : 'NOT FOUND'} "/>
     <p th:text="'Price margin: ' + ${priceMargin != null ? priceMargin : 'NOT FOUND'} "/>
     <p th:text="'Recurring period: ' + ${recurringPeriod != null ? recurringPeriod : 'NOT FOUND'} "/>
     <a href="/settings">Change your settings</a>

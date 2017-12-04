@@ -9,11 +9,3 @@ How to run:
 2. Run the main application in Eclipse, or package it into a JAR and run the jar
 3. In a browser, navigate to localhost:8080/submit
 4. Enter desired cryptocurrency (ETH/LTC/BTC) and desired currency (USD/CAD/AUD/etc)
-
-TODO:
-	//check register / login fields 
-	//restrict logins
-	//make sure database is persistent
-	//incorporate yodlee parser
-	//automate api call with cron
-	//automate oauth redirect

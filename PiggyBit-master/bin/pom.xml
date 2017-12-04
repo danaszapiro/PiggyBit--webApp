@@ -27,18 +27,6 @@
 	    <groupId>com.google.code.gson</groupId>
 	    <artifactId>gson</artifactId>
 	    </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-            </dependency>
-
-	
-	        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-mongodb</artifactId>
-            </dependency>
 	
 	<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
 	<dependency>
@@ -65,72 +53,6 @@
 <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-tomcat</artifactId>
-</dependency>
-
-<dependency>
-    <groupId>com.github.scribejava</groupId>
-    <artifactId>scribejava-core</artifactId>
-    <version>5.0.0</version>
-</dependency>
-
-<dependency>
-	<groupId>com.coinbase.api</groupId>
-	<artifactId>coinbase-java</artifactId>
-	<version>1.10.0</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.squareup.okhttp/okhttp -->
-<dependency>
-    <groupId>com.squareup.okhttp</groupId>
-    <artifactId>okhttp</artifactId>
-    <version>2.7.5</version>
-</dependency>
-
-<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
-<dependency>
-    <groupId>javax.ws.rs</groupId>
-    <artifactId>javax.ws.rs-api</artifactId>
-    <version>2.0</version>
-</dependency>
-
-<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
-<dependency>
-    <groupId>com.googlecode.json-simple</groupId>
-    <artifactId>json-simple</artifactId>
-</dependency>
-
-<dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-config</artifactId>
-    </dependency>
-
-
-
-
-<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-annotations</artifactId>
-    <version>2.9.2</version>
-</dependency>
-
-<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
-<dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpcore</artifactId>
-    <version>4.4.8</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-<dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpclient</artifactId>
-    <version>4.5.3</version>
-</dependency>
-
-
-<dependency>
-    <groupId>com.github.scribejava</groupId>
-    <artifactId>scribejava-apis</artifactId>
-    <version>5.0.0</version>
 </dependency>
     </dependencies>
 

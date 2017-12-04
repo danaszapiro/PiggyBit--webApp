@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Title</title>
     <script type="text/javascript" src="javascript.js"></script>
     <link rel="stylesheet" href="main/resources/styles/styles.css" type="text/css"/>
@@ -171,14 +171,14 @@ label 				 {
     <br/>
     <br/>
     <div class="group">
-        <p class="inputMaterial" id ='crypto' th:field:="*{preferredCrypto}" th:text="'Crypto currency requested: ' + ${crypto != null ? crypto : 'NOT FOUND'} ">
+        <p class="inputMaterial" id ='crypto' th:field:="*{preferredCrypto}" th:text="'Crypto currency requested: ' + ${crypto != null ? crypto : 'NOT FOUND'} "/>
         <span class="highlight"></span>
         <span class="bar"></span>
         
     </div>
     <div class="group">
     		
-        <p class="inputMaterial" id="result" th:field="*{result}" th:text="'Price for ' + ${crypto != null ? crypto : 'NOT FOUND'} + ' in ' + ${currency != null ? currency : 'NOT FOUND'} + ' is: ' + ${price != null ? price : 'NOT FOUND'} " >
+        <p class="inputMaterial" id="result" th:field="*{result}" th:text="'Price for ' + ${crypto != null ? crypto : 'NOT FOUND'} + ' in ' + ${currency != null ? currency : 'NOT FOUND'} + ' is: ' + ${price != null ? price : 'NOT FOUND'} " />
         <span class="highlight"></span>
         <span class="bar"></span>
         

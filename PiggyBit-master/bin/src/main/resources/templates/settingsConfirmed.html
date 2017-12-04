@@ -1,11 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Register</title>
-    <link rel="stylesheet" href=""/>
-    <script type="text/javascript" src="javascript.js"></script>
-    <style>
+    <title>Settings Confirmed</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style>
     @import url(https://fonts.googleapis.com/css?family=Roboto:400,500);
 
 html{
@@ -165,56 +163,13 @@ label 				 {
     </style>
 </head>
 <body>
-<div class="box">
-	<form action="#" th:action="@{/settings}" th:object="${user}" method="post">
-    <h1 id="logintoregister">Login</h1>
-    <div class="group">
-        <input class="inputMaterial" id ='userName' th:field:="*{userName}" type="text" th:required="required"/>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Username</label>
-    </div>
-    <div class="group">
-        <input class="inputMaterial" id="password" th:field="*{password}" type="password" th:required="required"/>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Password</label>
-    </div>
-    
-
-    <button id="buttonlogintoregister">Login</button>
-    <p id="plogintoregister">New to PiggyBit?</p><p id="textchange" onclick="register()">Register</p>
-    </form>
-</div>
+<div class ="box">
+	<h1>Settings Confirmed</h1>
+    <p th:text="'Currency requested: ' + ${currency != null ? currency : 'NOT FOUND'} "/>
+    <p th:text="'Crypto currency requested: ' + ${preferredCrypto != null ? preferredCrypto : 'NOT FOUND'} "/>
+    <p th:text="'Price margin: ' + ${priceMargin != null ? priceMargin : 'NOT FOUND'} "/>
+    <p th:text="'Recurring period: ' + ${recurringPeriod != null ? recurringPeriod : 'NOT FOUND'} "/>
+    <a href="/settings">Change your settings</a>
+</div>    
 </body>
-<script type="text/javascript">
-var cont = 0;
-
-function register(){
-
-     cont++;
-
-		if(cont==1){
-		 	$('.box').animate({height:'1200px'}, 550);
-			$('.show').css('display','block');
-      $('.box').animate({width:'400px'}, 550);
-			$('#logintoregister').text('Register');
-			$('#buttonlogintoregister').text('Register');
-			$('#plogintoregister').text("Login");
-		}
-		else
-		{
-			$('.show').css('display','none');
-			$('.box').animate({height:'365px'}, 500);
-      $('.box').animate({width:'400px'}, 550);
-			$('#logintoregister').text('Login');
-			$('#buttonlogintoregister').text('Login');
-			$('#plogintoregister').text("New to PiggyBit?");
-			$('#textchange').text('Register');
-			cont = 0;
-		}
-}
-</script>
 </html>
-
-

@@ -2,6 +2,9 @@ package piggybit.piggybitmongodb;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.demo.models.User;
+import com.demo.mongoDB.UserRepository;
+
 import java.util.List;
 
 @RestController
