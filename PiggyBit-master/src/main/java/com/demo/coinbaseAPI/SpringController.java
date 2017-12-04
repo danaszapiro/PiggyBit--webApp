@@ -81,7 +81,13 @@ public class SpringController {
 		String username = subLogin.getUsername();
 		String password = subLogin.getPassword();
 
-		return "settingsForm";
+		User user = getByUserName(username);
+		if (user != null) {
+			if (user.getPassword() == password)
+				return "settingsForm";
+			else
+				return "Login"
+		}
+		return "Login"
 	}
-
 }
