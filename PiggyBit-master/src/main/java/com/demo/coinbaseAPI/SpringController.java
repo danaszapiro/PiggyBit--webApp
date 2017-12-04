@@ -63,5 +63,25 @@ public class SpringController {
 
         return "Result";
     }
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model) {
+		model.addAttribute("Login", new Login());
+		return "Login";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String submitLogin(
+			@ModelAttribute("subLogin") Login subLogin,
+			BindingResult result, Model Login) throws IOException, ParseException {
+		if (result.hasErrors()) {
+			return "login";
+		}
+
+		String username = subLogin.getUsername();
+		String password = subLogin.getPassword();
+
+		return "settingsForm";
+	}
 
 }
