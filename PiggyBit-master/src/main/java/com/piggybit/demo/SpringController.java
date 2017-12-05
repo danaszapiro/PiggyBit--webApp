@@ -46,6 +46,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		httpSecurity.authorizeRequests().antMatchers("/").permitAll();
 	}
 
+
 	private static final Log log = LogFactory.getLog(SpringController.class);
 
 
