@@ -6,7 +6,8 @@ import com.mongodb.MongoClient;
 import com.piggybit.models.SettingsForm;
 import com.piggybit.models.User;
 import com.piggybit.mongoDB.UserRepository;
-import com.piggybit.demo.mainClass;
+import com.piggybit.mongoDB.UserService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.parser.ParseException;
@@ -15,25 +16,36 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 
 import java.io.IOException;
+import java.security.Principal;
 
 @Controller
-public class SpringController {
+public class SpringController extends WebSecurityConfigurerAdapter {
 
-	private UserController userController;
+	@Autowired
+	private UserRepository userRepository;
+	
 	private static final Log log = LogFactory.getLog(SpringController.class);
 	//MongoOperations mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "database"));
 	//private UserController userController = new UserController();
 
-
+    @GetMapping("/user/me")
+    public Principal user(Principal principal) {
+        return principal;
+    }
+    
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String getSettings(Model model) {
 		model.addAttribute("settingsForm", new SettingsForm());
@@ -84,9 +96,8 @@ public class SpringController {
 		user.setCoinbaseAccount(coinbaseAcc);
 		// repository.save(user);
 		//mongoOps.insert(user);
-		userController.insert(user);
+		userRepository.save(user);
 		log.info("Inserted : " + user);
-
 		return "Login";
 	}
 
@@ -100,9 +111,7 @@ public class SpringController {
 	public String login(@ModelAttribute("settingsForm") SettingsForm settingsForm, @ModelAttribute("user") User user,
 			BindingResult result, Model model) throws IOException, ParseException {
 
-		Query searchQuery = new Query(Criteria.where("userName").is(user.getUserName()));
-		//User found = mongoOps.findOne(searchQuery, User.class);
-		User found = userController.getByUserName(user.getUserName());
+		User found = userRepository.findByUserName(user.getUserName());
 		System.out.println(user.getUserName());
 		System.out.println(found.getUserName());
 		if (found == null || user.getUserName() == null) {

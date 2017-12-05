@@ -8,11 +8,13 @@
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/coinbase/authenticatedAPIcalls/Accounts.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/piggybit/models/User.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/coinbase/authenticatedAPIcalls/Users.java
+/Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/piggybit/demo/UserController.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/coinbase/services/CoinbaseToken.java
+/Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/piggybit/mongoDB/UserService.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/coinbase/demo/CoinbaseTest.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/coinbase/services/CoinbaseService.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/piggybit/models/SettingsForm.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/piggybit/mongoDB/UserRepository.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/piggybit/utils/PriceFetcher.java
 /Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/coinbase/services/CoinbaseAccessTokenJsonExtractor.java
-/Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/piggybit/demo/mainClass.java
+/Users/ivan/Desktop/411proj/PiggyBit--webApp/PiggyBit-master/src/main/java/com/piggybit/mainClass.java

@@ -1,0 +1,23 @@
+server:
+  port: 8084
+#Mongo Config
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: PiggyBtDb
+      repositories:
+        enabled: true
+
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: 778c0d1ec98e98f35c4fdd30d83cb813735ae7afa0ff13f8e74c84311d4f80b8
+      clientSecret: 8c936687c9bd55712f15e962ed84f32811594c41e8f3cc69ea458445d539729b
+      accessTokenUri: http://www.coinbase.com/oauth/token
+      userAuthorizationUri: https://www.coinbase.com/oauth/authorize
+    resource:
+      userInfoUri: https://api.coinbase.com/v2/user
