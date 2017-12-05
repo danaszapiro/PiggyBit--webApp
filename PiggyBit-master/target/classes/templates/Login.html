@@ -166,10 +166,10 @@ label 				 {
 </head>
 <body>
 <div class="box">
-	<form action="#" th:action="@{/settings}" th:object="${user}" method="post">
+	<form action="#" th:action="@{/login}" th:object="${user}" method="post">
     <h1 id="logintoregister">Login</h1>
     <div class="group">
-        <input class="inputMaterial" id ='userName' th:field:="*{userName}" type="text" th:required="required"/>
+        <input class="inputMaterial" id="userName" th:field="*{userName}" type="text" th:required="required"/>
         <span class="highlight"></span>
         <span class="bar"></span>
         <label>Username</label>
