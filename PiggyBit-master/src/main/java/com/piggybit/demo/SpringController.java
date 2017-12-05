@@ -30,7 +30,7 @@ public class SpringController {
 	 */
 	private static final Log log = LogFactory.getLog(SpringController.class);
 	MongoOperations mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "database"));
-	UserController userController = new UserController();
+	@Autowired private UserController userController = new UserController(userRepository);
 
 
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
