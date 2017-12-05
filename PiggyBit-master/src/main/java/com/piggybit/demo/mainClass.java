@@ -1,33 +1,35 @@
 package com.piggybit.demo;
 
+import com.piggybit.mongoDB.dbSeeder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.List;
+import java.util.Arrays;
 
 import com.piggybit.models.User;
 import com.piggybit.mongoDB.UserRepository;
 
 @SpringBootApplication
-public class mainClass implements CommandLineRunner {
-	
-	@Autowired
+public class mainClass {
+
+	/*@Autowired
 	private UserRepository userRepository;
+
+	public UserRepository getUserRepository(){
+		return this.userRepository;
+	}*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(mainClass.class, args);
 	}
-	
+	/*
 	@Override
 	public void run(String... strings) throws Exception {
 
-		User user1 = new User("DanaSzapiro", "password", "Dana", "Szapiro", "danasz@bu.edu");
-		User user2 = new User("IvanWong", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
-
-		List<User> users = Arrays.asList(user1, user2);
-		userRepository.deleteAll();
-		userRepository.save(users);
-	}
+		dbSeeder seeder = new dbSeeder(userRepository);
+	}/*
 	/*
 	 * public static void main(String[] args) throws IOException, ParseException {
 	 * System.out.println(PriceFetcher.getRequest()); String price =

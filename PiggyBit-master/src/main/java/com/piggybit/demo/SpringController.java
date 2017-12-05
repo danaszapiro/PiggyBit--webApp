@@ -5,6 +5,8 @@ import com.coinbase.services.TokenExtractor;
 import com.mongodb.MongoClient;
 import com.piggybit.models.SettingsForm;
 import com.piggybit.models.User;
+import com.piggybit.mongoDB.UserRepository;
+import com.piggybit.demo.mainClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.parser.ParseException;
@@ -19,18 +21,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
 @Controller
 public class SpringController {
 
-	/*
-	 * @Autowired private UserRepository repository;
-	 */
+	private UserController userController;
 	private static final Log log = LogFactory.getLog(SpringController.class);
-	MongoOperations mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "database"));
-	@Autowired private UserController userController = new UserController(userRepository);
+	//MongoOperations mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "database"));
+	//private UserController userController = new UserController();
 
 
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
