@@ -3,20 +3,29 @@ package com.piggybit.demo;
 import com.piggybit.models.User;
 import com.piggybit.mongoDB.UserRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/rest/users")
 public class UserController {
+    //@Autowired
     private UserRepository userRepository;
 
-    public UserController() {
+   /* public UserController() {
     }
 
     public UserController(UserRepository userRepository){
         this.userRepository = userRepository;
     }
+*/
 
     @GetMapping("/all")
     public List<User> getAll(){
