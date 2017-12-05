@@ -1,16 +1,18 @@
 package com.piggybit.demo;
 
+import com.piggybit.models.User;
+import com.piggybit.mongoDB.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import com.piggybit.models.User;
-import com.piggybit.mongoDB.UserRepository;
-import com.piggybit.mongoDB.dbSeeder;
 
 @RestController
 @RequestMapping("/rest/users")
 public class UserController {
     private UserRepository userRepository;
+
+    public UserController() {
+    }
 
     public UserController(UserRepository userRepository){
         this.userRepository = userRepository;
