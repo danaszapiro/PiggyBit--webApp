@@ -27,16 +27,216 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.security.Principal;
 
 @Controller
+@Configuration
 public class SpringController extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.authorizeRequests().antMatchers("/").permitAll();
+	}
+
+	private static final Log log = LogFactory.getLog(SpringController.class);
+	//MongoOperations mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "database"));
+	//private UserController userController = new UserController();
+
+	@GetMapping("/user/me")
+	public Principal user(Principal principal) {
+		return principal;
+	}
+
+	@RequestMapping(value = "/settings", method = RequestMethod.GET)
+	public String getSettings(Model model) {
+		model.addAttribute("settingsForm", new SettingsForm());
+		return "settingsForm";
+	}
+
+	@RequestMapping(value = "/settings", method = RequestMethod.POST)
+	public String settingsResult(@ModelAttribute("setForm") SettingsForm setForm, BindingResult result,
+								 Model settingsForm) throws IOException, ParseException {
+		if (result.hasErrors()) {
+			return "settingsForm";
+		}
+		String currency = setForm.getCurrency();
+		String crypto = setForm.getCrypto();
+		String priceMargin = setForm.getPriceMargin();
+		String recurringPeriod = setForm.getRecurringPeriod();
+
+		settingsForm.addAttribute("currency", currency);
+		settingsForm.addAttribute("crypto", crypto);
+		settingsForm.addAttribute("priceMargin", priceMargin);
+		settingsForm.addAttribute("recurringPeriod", recurringPeriod);
+
+		return "settingsConfirmed";
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String register(User user) throws IOException, ParseException {
+
+		return "Register";
+	}
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String registerSuccessful(@ModelAttribute("user") User user, BindingResult result, Model model)
+			throws IOException, ParseException {
+		if (result.hasErrors()) {
+			return "Register";
+		}
+
+		String auth = user.getAuthCode();
+		String token = TokenExtractor.getToken(auth);
+		String accessToken = TokenExtractor.getAccessToken(token);
+		String refreshToken = TokenExtractor.getRefreshToken(token);
+		String coinbaseAcc = Accounts.getAccounts(Accounts.getAccountInfo(accessToken));
+
+		user.setAccessToken(accessToken);
+		user.setRefreshToken(refreshToken);
+		user.setAuthCode(auth);
+		user.setCoinbaseAccount(coinbaseAcc);
+		// repository.save(user);
+		//mongoOps.insert(user);
+		userRepository.save(user);
+		log.info("Inserted : " + user);
+		return "Login";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(@ModelAttribute("user") User user) throws IOException, ParseException {
+
+		return "Login";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(@ModelAttribute("settingsForm") SettingsForm settingsForm, @ModelAttribute("user") User user,
+						BindingResult result, Model model) throws IOException, ParseException {
+
+		User found = userRepository.findByUserName(user.getUserName());
+		System.out.println(user.getUserName());
+		System.out.println(found.getUserName());
+		if (found == null || user.getUserName() == null) {
+			return "LoginFail";
+		} else if (found.getPassword() == user.getPassword()) {
+			return "settingsForm";
+		}
+
+		return "LoginFail";
+	}
+}
+
+/*package com.piggybit.demo;
+
+import com.coinbase.authenticatedAPIcalls.Accounts;
+import com.coinbase.services.TokenExtractor;
+import com.mongodb.MongoClient;
+import com.piggybit.models.SettingsForm;
+import com.piggybit.models.User;
+import com.piggybit.mongoDB.UserRepository;
+import com.piggybit.mongoDB.UserService;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.json.simple.parser.ParseException;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+<<<<<<< HEAD
+import org.springframework.context.annotation.Configuration;
+=======
+import java.util.List;
+>>>>>>>  data base
+
+import java.io.IOException;
+import java.security.Principal;
+
+@Controller
+@Configuration
+public class SpringController extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@RequestMapping(value = "/rest/users")
+	@GetMapping("/all")
+	public List<User> getAll() {
+		List<User> users = this.userRepository.findAll();
+		return users;
+	}
+
+	@PutMapping
+	public void insert(@RequestBody User user) {
+		this.userRepository.insert(user);
+	}
+
+	@PostMapping
+	public void update(@RequestBody User user) {
+		this.userRepository.save(user);
+	}
+
+	public void delete(@PathVariable("id") String id) {
+		this.userRepository.delete(id);
+	}
+
+	@GetMapping("/{id}")
+	public User getById(@PathVariable("id") String id) {
+		User user = this.userRepository.findById(id);
+		return user;
+	}
+
+	@GetMapping("/{userName}")
+	public User getByUserName(@PathVariable("userName") String userName) {
+		User user = this.userRepository.findByUserName(userName);
+		return user;
+	}
+	/*@GetMapping("/all")
+	public List<User> getAll(){
+		List<User> users = this.userRepository.findAll();
+		return users;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void create(@RequestBody User user) {
+		userRepository.save(user);
+	}
+
+	@RequestMapping(value="/{userName}")
+	public User read(@PathVariable String userName) {
+		return userRepository.findByUserName( userName);
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void update(@RequestBody User user) {
+		userRepository.save(user);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable String id) {
+		userRepository.delete(id);
+	}*/
 	
+/*	@Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeRequests().antMatchers("/").permitAll();
+}
+
 	private static final Log log = LogFactory.getLog(SpringController.class);
 	//MongoOperations mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "database"));
 	//private UserController userController = new UserController();
@@ -103,7 +303,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@ModelAttribute("user") User user) throws IOException, ParseException {
-
+		System.out.println("login");
 		return "Login";
 	}
 
@@ -111,16 +311,17 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	public String login(@ModelAttribute("settingsForm") SettingsForm settingsForm, @ModelAttribute("user") User user,
 			BindingResult result, Model model) throws IOException, ParseException {
 
-		User found = userRepository.findByUserName(user.getUserName());
+		User found = getByUserName(user.getUserName());
 		System.out.println(user.getUserName());
 		System.out.println(found.getUserName());
-		if (found == null || user.getUserName() == null) {
+		/*if (found == null || user.getUserName() == null) {
 			return "LoginFail";
 		} else if (found.getPassword() == user.getPassword()) {
 			return "settingsForm";
 		}
 
-		return "LoginFail";
+		return "LoginFail"*/
+	/*	return "settingsForm";
 	}
 }
 /*

@@ -1,7 +1,5 @@
 package com.piggybit.demo;
 
-import com.piggybit.models.User;
-import com.piggybit.mongoDB.UserRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,51 +9,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.piggybit.models.User;
+import com.piggybit.mongoDB.UserRepository;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/rest/users")
 public class UserController {
-    //@Autowired
+    @Autowired
     private UserRepository userRepository;
 
-   /* public UserController() {
-    }
-
-    public UserController(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
-*/
-
     @GetMapping("/all")
-    public List<User> getAll(){
+    public List<User> getAll() {
         List<User> users = this.userRepository.findAll();
         return users;
     }
 
     @PutMapping
-    public void insert(@RequestBody User user){
+    public void insert(@RequestBody User user) {
         this.userRepository.insert(user);
     }
 
     @PostMapping
-    public void update(@RequestBody User user){
+    public void update(@RequestBody User user) {
         this.userRepository.save(user);
     }
 
-    public void delete(@PathVariable("id") String id){
+    public void delete(@PathVariable("id") String id) {
         this.userRepository.delete(id);
     }
 
     @GetMapping("/{id}")
-    public User getById(@PathVariable("id") String id){
+    public User getById(@PathVariable("id") String id) {
         User user = this.userRepository.findById(id);
         return user;
     }
 
     @GetMapping("/{userName}")
-    public User getByUserName(@PathVariable("userName") String userName){
+    public User getByUserName(@PathVariable("userName") String userName) {
         User user = this.userRepository.findByUserName(userName);
         return user;
     }
+
 }
+
