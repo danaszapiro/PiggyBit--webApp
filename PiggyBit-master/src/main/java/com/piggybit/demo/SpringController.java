@@ -25,10 +25,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;
@@ -45,30 +42,36 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
+	@Autowired
+	private UserController userController;
+
+	private User me;
+
 	@Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests().antMatchers("/").permitAll();
-}
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.authorizeRequests().antMatchers("/").permitAll();
+	}
+
 
 	private static final Log log = LogFactory.getLog(SpringController.class);
-	//MongoOperations mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "database"));
-	//private UserController userController = new UserController();
 
-    @GetMapping("/user/me")
-    public Principal user(Principal principal) {
-        return principal;
-    }
-    
+
+	@GetMapping("/user/me")
+	public Principal user(Principal principal) {
+		return principal;
+	}
+
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
-	public String getSettings(Model model) {
+	public String getSettings(Model model, User user) {
+
 		model.addAttribute("settingsForm", new SettingsForm());
 		return "settingsForm";
 	}
 
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public String settingsResult(@ModelAttribute("setForm") SettingsForm setForm, BindingResult result,
-			Model settingsForm) throws IOException, ParseException {
+								 Model settingsForm) throws IOException, ParseException {
 		if (result.hasErrors()) {
 			return "settingsForm";
 		}
@@ -81,6 +84,17 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		settingsForm.addAttribute("crypto", crypto);
 		settingsForm.addAttribute("priceMargin", priceMargin);
 		settingsForm.addAttribute("recurringPeriod", recurringPeriod);
+
+		/*int period = Integer.valueOf(recurringPeriod);
+		int price = Integer.valueOf(priceMargin);
+
+		me.setCurrency(currency);
+		me.setCryptocurrency(crypto);
+		me.setPriceMargin(price);
+		me.setInvestmentPeriod(period);
+
+		userController.update(me);
+		userRepository.save(me);*/
 
 		return "settingsConfirmed";
 	}
@@ -97,7 +111,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register(User user) throws IOException, ParseException {
+	public String register(Model model, User user) throws IOException, ParseException {
 
 		return "Register";
 	}
@@ -121,18 +135,25 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		user.setCoinbaseAccount(coinbaseAcc);
 		// repository.save(user);
 		//mongoOps.insert(user);
-		userRepository.save(user);
+
+		me = user;
+		me.setCurrency("USD");
+		me.setCryptocurrency("BTN");
+		me.setPriceMargin(1);
+		me.setInvestmentPeriod(1);
+		userController.insert(me);
 		log.info("Inserted : " + user);
 		return "Login";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(@ModelAttribute("user") User user) throws IOException, ParseException {
+	public String userLogin(Model model) {
 
+		model.addAttribute("user", new User());
 		return "Login";
 	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
+<<<<<<< HEAD
 	public String login(@ModelAttribute("settingsForm") SettingsForm settingsForm, @ModelAttribute("user") User user,
 			BindingResult result, Model model) throws IOException, ParseException {
 
@@ -143,9 +164,26 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 			return "LoginFail";
 		} else if (found.getPassword() == user.getPassword()) {
 			return "home";
-		}
+=======
+	public String login( @ModelAttribute("user") User user,
+						BindingResult result, Model model) throws IOException, ParseException {
 
-		return "LoginFail";
+		System.out.println("Login POST page");
+
+
+		String userName = user.getUserName().toString();
+		String password = user.getPassword().toString();
+		User found = userController.getByUserName(userName);
+		if( found != null){
+			System.out.println(found.getUserName());
+			if (found.getPassword() != null && password.equals(found.getPassword().toString())){
+				System.out.println(found.getPassword());
+			    me = found;
+				return getSettings(model, me);
+			}
+>>>>>>> a751a8d1a0949d9f05e1ce4cea8c28cade571e14
+		}
+		return "Login";
 	}
 	
 /*
@@ -161,48 +199,3 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		return "Login";
 	}
 }
-/*
- * -----------------------------------------(not sure if we need these) DB REST
- * CALLS------------------------------------------------
- */
-
-/*
- * @RequestMapping("/persons")
- * 
- * @Slf4j
- * 
- * @PreAuthorize("hasRole('ROLE_ADMIN')") class PersonController {
- * 
- * @Autowired private UserRepository repository;
- * 
- * @PreAuthorize("hasRole('ROLE_USER')")
- * 
- * @RequestMapping(value = "/{id}", method = RequestMethod.GET) User
- * getUserById(@PathVariable String id) {
- * log.info("getUserById with parameter $id"); return repository.findOne(id); }
- * 
- * @PreAuthorize("hasRole('ROLE_USER')")
- * 
- * @RequestMapping(method = RequestMethod.GET) List<User> getAllUsers() {
- * log.info("getAllUsers()"); return repository.findAll(); }
- * 
- * @RequestMapping(method = RequestMethod.POST) User createUser(@RequestBody
- * User newUser) { log.info("createUser with parameter $newUser"); newUser.id =
- * null; return repository.save(newUser); }
- * 
- * @RequestMapping(value = "/{id}", method = RequestMethod.PUT) void
- * updateUser(@PathVariable String id, @RequestBody User updatedUser) {
- * log.info("updateUser with parameter $id and $updatedUser"); updatedUser.id =
- * id; repository.save(updatedUser); }
- * 
- * @RequestMapping(value = "/{id}", method = RequestMethod.DELETE) void
- * removeUser(@PathVariable String id) {
- * log.info("removeUser with parameter $id"); repository.delete(id); }
- * 
- * @PreAuthorize("hasRole('ROLE_USER')")
- * 
- * @RequestMapping(value = "/search/byFirstName/{firstName}", method =
- * RequestMethod.GET) List<User> getUserByFirstName(@PathVariable String
- * firstName) { log.info("getUserByFirstName with parameter $firstName"); return
- * repository.findByFirstName(firstName); } }
- */
