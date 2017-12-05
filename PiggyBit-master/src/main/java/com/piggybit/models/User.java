@@ -2,12 +2,6 @@ package com.piggybit.models;
 
 import java.util.Collection;
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,41 +9,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Document(collection = "Users")
 public class User implements UserDetails {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	@Id
 	public String id;
-
-	@NotEmpty
-    @Size(min=6, max=20)
 	public String userName;
-    
-	@NotEmpty
-    @Size(min=6, max=20)
 	public String password;
-    
-	@NotEmpty
-    @Size(min=1)
 	public String firstName;
-    
-	@NotEmpty
-    @Size(min=1)
 	public String lastName;
-    
-    @NotEmpty @Email
 	public String email;
-	
-    @NotEmpty
-    @Size(min=6, max=100)
 	public String yodleeUser;
-    
-    @NotEmpty
-    @Size(min=6, max=100)
 	public String yodleePass;
-    
 	public String address;
 	public String city;
 	public String state;

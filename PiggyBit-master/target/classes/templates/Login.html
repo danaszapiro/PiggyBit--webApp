@@ -27,8 +27,6 @@ html{
 	padding:10px 0px;
 	border-radius: 10px;
 	background:rgba(255,255,255,1);
-	border-top: 2px solid #C0C0C0;
-	border-bottom: 2px solid #F00;
   margin-bottom: 100px;
 }
 .box h1{
@@ -163,13 +161,14 @@ label 				 {
   to 	{ width:0; background:transparent; }
 }
     </style>
+    
 </head>
 <body>
 <div class="box">
-	<form action="#" th:action="@{/login}" th:object="${user}" method="post">
+	<form action="#" th:action="@{/settings}" th:object="${user}" method="post">
     <h1 id="logintoregister">Login</h1>
     <div class="group">
-        <input class="inputMaterial" id="userName" th:field="*{userName}" type="text" th:required="required"/>
+        <input class="inputMaterial" id ='userName' th:field:="*{userName}" type="text" th:required="required"/>
         <span class="highlight"></span>
         <span class="bar"></span>
         <label>Username</label>
@@ -183,38 +182,10 @@ label 				 {
     
 
     <button id="buttonlogintoregister">Login</button>
-    <p id="plogintoregister">New to PiggyBit?</p><p id="textchange" onclick="register()">Register</p>
+    <p id="plogintoregister">New to PiggyBit?</p><p id="textchange">Register</p>
     </form>
 </div>
 </body>
-<script type="text/javascript">
-var cont = 0;
-
-function register(){
-
-     cont++;
-
-		if(cont==1){
-		 	$('.box').animate({height:'1200px'}, 550);
-			$('.show').css('display','block');
-      $('.box').animate({width:'400px'}, 550);
-			$('#logintoregister').text('Register');
-			$('#buttonlogintoregister').text('Register');
-			$('#plogintoregister').text("Login");
-		}
-		else
-		{
-			$('.show').css('display','none');
-			$('.box').animate({height:'365px'}, 500);
-      $('.box').animate({width:'400px'}, 550);
-			$('#logintoregister').text('Login');
-			$('#buttonlogintoregister').text('Login');
-			$('#plogintoregister').text("New to PiggyBit?");
-			$('#textchange').text('Register');
-			cont = 0;
-		}
-}
-</script>
 </html>
 
 

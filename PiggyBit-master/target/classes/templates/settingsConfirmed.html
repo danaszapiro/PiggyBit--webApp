@@ -25,8 +25,6 @@ html{
 	padding:10px 0px;
 	border-radius: 10px;
 	background:rgba(255,255,255,1);
-	border-top: 2px solid #C0C0C0;
-	border-bottom: 2px solid #F00;
   margin-bottom: 100px;
 }
 .box h1{
@@ -160,6 +158,9 @@ label 				 {
 	from { background:#5264AE; }
   to 	{ width:0; background:transparent; }
 }
+.text-center {
+	text-align:center;
+}
     </style>
 </head>
 <body>
@@ -169,7 +170,10 @@ label 				 {
     <p th:text="'Currency requested: ' + ${currency != null ? currency : 'NOT FOUND'} "/>
     <p th:text="'Price margin: ' + ${priceMargin != null ? priceMargin : 'NOT FOUND'} "/>
     <p th:text="'Recurring period: ' + ${recurringPeriod != null ? recurringPeriod : 'NOT FOUND'} "/>
-    <a href="/settings">Change your settings</a>
+    <p class="text-center"><a href="/settings">Change your settings</a></p>
+    <p class="text-center"><a href="/login" value="/logout">Logout</a></p>
+    <p class="text-center"><a href="/Home">Return home</a></p>
+    <a href="/home"><button id="buttonlogintoregister">Home</button></a>
 </div>    
 </body>
 </html>

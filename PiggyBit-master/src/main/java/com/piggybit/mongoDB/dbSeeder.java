@@ -21,9 +21,8 @@ public class dbSeeder implements CommandLineRunner {
 
 		User user1 = new User("DanaSzapiro", "password", "Dana", "Szapiro", "danasz@bu.edu");
 		User user2 = new User("IvanWong", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
-		User user3 = new User("IvanWong2", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
 
-		List<User> users = Arrays.asList(user1, user2, user3);
+		List<User> users = Arrays.asList(user1, user2);
 		userRepository.deleteAll();
 		userRepository.save(users);
 
