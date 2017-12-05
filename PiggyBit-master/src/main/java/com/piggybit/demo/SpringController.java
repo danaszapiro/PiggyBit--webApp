@@ -27,16 +27,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.security.Principal;
 
 @Controller
+@Configuration
 public class SpringController extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeRequests().antMatchers("/").permitAll();
+}
+
 	private static final Log log = LogFactory.getLog(SpringController.class);
 	//MongoOperations mongoOps = new MongoTemplate(new SimpleMongoDbFactory(new MongoClient(), "database"));
 	//private UserController userController = new UserController();

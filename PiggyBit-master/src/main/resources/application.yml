@@ -13,6 +13,7 @@ spring:
 security:
   basic:
     enabled: false
+  ignore: /**
   oauth2:
     client:
       clientId: 778c0d1ec98e98f35c4fdd30d83cb813735ae7afa0ff13f8e74c84311d4f80b8
