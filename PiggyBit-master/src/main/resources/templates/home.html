@@ -161,11 +161,14 @@ label 				 {
 	from { background:#5264AE; }
   to 	{ width:0; background:transparent; }
 }
+.text-center {
+	text-align:center;
+}
     </style>
 </head>
 <body>
 <div class="box">
-    <h1 id="logintoregister">Welcome to PiggyBit</h1>
+    <h1 id="logintoregister">Welcome <strong>${user}</strong></h1>
     <br/>
     <br/>
     <div class="group">
@@ -180,8 +183,17 @@ label 				 {
         <span class="bar"></span>
         <label>Savings</label>
     </div>
+    <div class="group">
+        <input class="inputMaterial" id="result" th:field="*{ }" th:text="'Since ' + ${ } + ', you have accumulated ' + ${ } + ' is: ' + ${ } " >
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Savings</label>
+    </div>
+    
 
-    <button id="buttonlogintoregister">Submit another request</button>
+    <button id="buttonlogintoregister">Invest</button>
+    <button id="buttonlogintoregister" th:action="@{/settings}">Change Settings</button>
+    <p class="text-center"><a th:action="@{/login}" value="/logout">Logout</a></p>
 </div>
 </body>
 </html>

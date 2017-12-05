@@ -8,6 +8,7 @@ import com.piggybit.models.User;
 import com.piggybit.mongoDB.UserRepository;
 import com.piggybit.mongoDB.UserService;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.parser.ParseException;
@@ -18,6 +19,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +35,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.security.Principal;
+
+import javax.servlet.http.HttpServletResponse;
+
 
 @Controller
 @Configuration
@@ -77,6 +84,17 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 
 		return "settingsConfirmed";
 	}
+	
+	/*
+	@RequestMapping(value = "/home", method = RequestMethod.POST)
+	public String home(Model model) {
+		model.addAttribute("home", new getHome());
+		return "home";
+	}
+	
+	*/
+	
+	
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(User user) throws IOException, ParseException {
@@ -124,10 +142,23 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		if (found == null || user.getUserName() == null) {
 			return "LoginFail";
 		} else if (found.getPassword() == user.getPassword()) {
-			return "settingsForm";
+			return "home";
 		}
 
 		return "LoginFail";
+	}
+	
+/*
+ * Logout Functionality 
+ */
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	}
+		return "Login";
 	}
 }
 /*
