@@ -10,9 +10,9 @@ import com.piggybit.demo.UserController;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
-	User findById(String id);
+	public User findById(String id);
 
-	User findByUserName(String userName);
+	public User findByUserName(String userName);
 
-	List<User> findByFirstName(String firstName);
+	public List<User> findByFirstName(String firstName);
 }
