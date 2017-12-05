@@ -93,7 +93,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String register(User user) throws IOException, ParseException {
+	public String register(Model model, User user) throws IOException, ParseException {
 
 		return "Register";
 	}
@@ -123,7 +123,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		me.setCryptocurrency("BTN");
 		me.setPriceMargin(1);
 		me.setInvestmentPeriod(1);
-		userController.update(me);
+		userController.insert(me);
 		log.info("Inserted : " + user);
 		return "Login";
 	}
