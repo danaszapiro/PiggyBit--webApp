@@ -1,5 +1,6 @@
 package com.piggybit.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class User implements UserDetails {
 	public String cryptocurrency = "BTC";
 	public double priceMargin = 5.00;
 	public int investmentPeriod = 7;
-	public List<eventLog> eventLogs;
+	public List<EventLog> eventLogs = new ArrayList<EventLog>();
 	public double savedUpMoney = 0;
 	public LocalDate lastInvestmentDate = new LocalDate("2017-03-01");
 	public User() {
@@ -306,15 +307,15 @@ public class User implements UserDetails {
 		this.lastInvestmentDate = newInvestmentDate;
 	}
 
-	public List<eventLog> getEventLogs() {
+	public List<EventLog> getEventLogs() {
 		return eventLogs;
 	}
 
-	public void setEventLogs(List<eventLog> eventLogs) {
+	public void setEventLogs(List<EventLog> eventLogs) {
 		this.eventLogs = eventLogs;
 	}
 
-	public void addEventLogs(eventLog eventLogs) {
+	public void addEventLogs(EventLog eventLogs) {
 		this.eventLogs.add(eventLogs);
 	}
 

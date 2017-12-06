@@ -3,16 +3,16 @@ package com.piggybit.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class eventLog {
-	private long moneyInvested;
+public class EventLog {
+	private double moneyInvested;
 	private String currency;
 	private String cryptocurrency;
 	private int period;
 
-	protected eventLog() {
+	protected EventLog() {
 	}
 
-	public eventLog(long moneyInvested, String currency, String cryptocurrency, int period, String date) {
+	public EventLog(double moneyInvested, String currency, String cryptocurrency, int period, String date) {
 		this.moneyInvested = moneyInvested;
 		this.currency = currency;
 		this.cryptocurrency = cryptocurrency;
