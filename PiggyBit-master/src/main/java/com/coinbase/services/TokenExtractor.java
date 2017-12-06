@@ -57,7 +57,6 @@ public class TokenExtractor {
 		RequestBody body = RequestBody.create(mediaType, "&grant_type=refresh_token" 
 				+ "&client_id=" + CB_APP_ID + "&client_secret=" + CB_APP_SECRET + "&refresh_token=" + token);
 		Request request = new Request.Builder().url(OAUTH_URL).post(body).build();
-
 		Response response = client.newCall(request).execute();
 		return response.body().string();
 
