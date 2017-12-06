@@ -183,6 +183,21 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		return userLogin(model);
 	}
 
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String homePage(Model model, User user) throws IOException, ParseException {
+		User userSession = userController.getByUserName(user.getUserName());
+		me = userSession;
+		System.out.print(userSession.toString());
+		model.addAttribute("user", me);
+		return "home";
+	}
+
+	@RequestMapping(value = "/home", method = RequestMethod.POST)
+	public String homePage(@ModelAttribute("user") User user, BindingResult result, Model model) throws IOException, ParseException {
+		return getSettings(model,me);
+	}
+
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String userLogin(Model model) {
 
@@ -200,7 +215,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 			if (found.getPassword() != null && password.equals(found.getPassword().toString())){
 				System.out.println(found.getPassword());
 			    me = found;
-				return getSettings(model, me);
+				return homePage(model, me);
 			}
 		}
 		return "Login";
