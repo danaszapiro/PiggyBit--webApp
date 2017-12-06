@@ -46,9 +46,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		httpSecurity.authorizeRequests().antMatchers("/").permitAll();
 	}
 
-
 	private static final Log log = LogFactory.getLog(SpringController.class);
-
 
 	@GetMapping("/user/me")
 	public Principal user(Principal principal) {
@@ -58,12 +56,9 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String getSettings(Model model, User user) {
 
-
 		User userSession = userController.getByUserName(user.getUserName());
 		me = userSession;
 		model.addAttribute("user", userSession);
-		System.out.println(userSession.getCurrency());
-		System.out.println(userSession.toString());
 		if(userSession != null && userSession.getCurrency() !=null){
 			String currency = userSession.getCurrency();
 			String crypto = userSession.getCryptocurrency();
@@ -74,7 +69,6 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 			return "settingsForm";
 		}
 		else {
-			System.out.println("settings get no");
 			model.addAttribute("settingsForm", new SettingsForm());
 			return "settingsForm";
 		}
@@ -118,13 +112,9 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerSuccessful(@ModelAttribute("user") User user, BindingResult result, Model model)
 			throws IOException, ParseException {
-		System.out.println("reg post");
 		if (result.hasErrors()) {
 			return "Register";
 		}
-		System.out.println("reg 2");
-		System.out.println(model.toString());
-		System.out.println(user.toString());
 		me = user;
 		userController.insert(me);
 		log.info("Inserted : " + user);
@@ -141,14 +131,10 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	public String login( @ModelAttribute("user") User user,
 						BindingResult result, Model model) throws IOException, ParseException {
 
-		System.out.println("Login POST page");
-
-
 		String userName = user.getUserName().toString();
 		String password = user.getPassword().toString();
 		User found = userController.getByUserName(userName);
 		if( found != null){
-			System.out.println(found.getUserName());
 			if (found.getPassword() != null && password.equals(found.getPassword().toString())){
 				System.out.println(found.getPassword());
 			    me = found;
