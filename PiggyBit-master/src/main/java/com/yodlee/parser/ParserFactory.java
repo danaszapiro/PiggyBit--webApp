@@ -16,20 +16,20 @@ public class ParserFactory
 		String mn = "getParser(" + T.getName()+ ")";
 		//System.out.println(fqcn + " :: " + mn);
 		Parser parser = null;
-		if(T.getCanonicalName().equals("beans.CobrandContext"))
+		if(T.getCanonicalName().equals("com.yodlee.beans.CobrandContext"))
 		{
 			parser = (CobrandContextParser) new CobrandContextParser();
 		}
-		if(T.getCanonicalName().equals("beans.UserContext"))
+		if(T.getCanonicalName().equals("com.yodlee.beans.UserContext"))
 		{
 			parser = (UserContextParser) new UserContextParser();
 		}
 		
-		if(T.getCanonicalName().equals("beans.AccessToken"))
+		if(T.getCanonicalName().equals("com.yodlee.beans.AccessToken"))
 		{
 			parser = (AccessTokenParser) new AccessTokenParser();
 		}
-		if(T.getCanonicalName().equals("beans.ProviderAccountRefreshStatus"))
+		if(T.getCanonicalName().equals("com.yodlee.beans.ProviderAccountRefreshStatus"))
 		{
 			parser = (ProviderAccRefreshStatusParser) new ProviderAccRefreshStatusParser();
 		}

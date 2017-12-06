@@ -35,7 +35,8 @@
 	<dependency>
 	    <groupId>com.google.code.gson</groupId>
 	    <artifactId>gson</artifactId>
-	    </dependency>
+	    <version>2.7</version>
+	</dependency>
 
 
         <dependency>

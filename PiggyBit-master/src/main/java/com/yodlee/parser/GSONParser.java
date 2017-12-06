@@ -15,6 +15,9 @@ public class GSONParser
 	
 	public static <T> Object handleJson(String json, Class<?> T) throws IOException
 	{
+		System.out.println("In GSONParser");
+		System.out.println(json);
+		System.out.println(T.getCanonicalName());
 		String mn = "handleJson(" + json + ", " + T.getCanonicalName()+" )";
 		//System.out.println(fqcn + " :: " + mn );
 		return ParserFactory.getParser(T).parseJSON(json);

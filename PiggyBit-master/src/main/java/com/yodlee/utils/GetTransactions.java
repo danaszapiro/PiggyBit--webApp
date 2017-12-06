@@ -113,13 +113,7 @@ public class GetTransactions {
     		Double investment_total = 0.00;
     		
     		JSONParser parser = new JSONParser();
-        JSONObject userAccount;
-		try {
-			userAccount = (JSONObject) parser.parse(userAccounts);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        JSONObject userAccount = (JSONObject) parser.parse(userAccounts);
         JSONArray accountList = (JSONArray) userAccount.get("account");
         System.out.println("Number of accounts: " +  accountList.size());
         JSONObject account = (JSONObject) accountList.get(1);
