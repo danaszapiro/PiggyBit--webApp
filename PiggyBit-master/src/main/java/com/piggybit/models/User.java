@@ -63,9 +63,9 @@ public class User implements UserDetails {
 	public String accessToken;
 	public String authCode;
 	public String currency;
-	public String cryptocurrency;
-	public int priceMargin;
-	public int investmentPeriod;
+	public String cryptocurrency = "BTC";
+	public int priceMargin = 1;
+	public int investmentPeriod = 7;
 	public List<eventLog> eventLogs;
 	public double savedUpMoney = 0;
 	public LocalDate lastInvestmentDate = new LocalDate();
