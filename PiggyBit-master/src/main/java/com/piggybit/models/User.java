@@ -66,6 +66,7 @@ public class User implements UserDetails {
 	public int priceMargin;
 	public int investmentPeriod;
 	public List<eventLog> eventLogs;
+	public double savedUpMoney;
 
 	public User() {
 		super();
@@ -104,6 +105,7 @@ public class User implements UserDetails {
 		this.zipcode = zipcode;
 		this.timeZone = timeZone;
 		this.currency = currency;
+		this.savedUpMoney = 0;
 	}
 
 	public String getId() {
@@ -280,6 +282,18 @@ public class User implements UserDetails {
 
 	public void setInvestmentPeriod(int investmentPeriod) {
 		this.investmentPeriod = investmentPeriod;
+	}
+
+	public double getSavedUpMoney() {
+		return savedUpMoney;
+	}
+
+	public void setSavedUpMoney(double savedUpMoney) {
+		this.savedUpMoney = savedUpMoney;
+	}
+
+	public void addSavedUpMoney(double savedUpMoney) {
+		this.savedUpMoney += savedUpMoney;
 	}
 
 	public List<eventLog> getEventLogs() {

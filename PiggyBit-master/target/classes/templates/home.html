@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Title</title>
     <script type="text/javascript" src="javascript.js"></script>
         <style>
@@ -165,23 +165,12 @@ label 				 {
 </head>
 <body>
 <div class="box">
+    <form action="#" th:action="@{/home}" method="post">
     <h1 id="logintoregister">Welcome to PiggyBit</h1>
     <br/>
     <br/>
-    <div class="group">
-        <input class="inputMaterial" id ='crypto' th:field:="*{crypto}" th:text="'Crypto currency requested: ' + ${crypto != null ? crypto : 'NOT FOUND'} ">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Crypto</label>
-    </div>
-    <div class="group">
-        <input class="inputMaterial" id="result" th:field="*{result}" th:text="'Price for ' + ${crypto != null ? crypto : 'NOT FOUND'} + ' in ' + ${currency != null ? currency : 'NOT FOUND'} + ' is: ' + ${price != null ? price : 'NOT FOUND'} " >
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Savings</label>
-    </div>
-
-    <button id="buttonlogintoregister">Submit another request</button>
+    <button id="buttonlogintoregister">Settings</button>
+    </form>
 </div>
 </body>
 </html>
