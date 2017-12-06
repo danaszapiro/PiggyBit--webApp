@@ -16,7 +16,7 @@ html{
 .box{
 	position: relative;
 	margin: auto;
-	height: 365px;
+	height: 450px;
   top: 40px;
 	left: 0;
 	z-index: 200;
@@ -165,12 +165,19 @@ label 				 {
 </head>
 <body>
 <div class="box">
-    <form action="#" th:action="@{/home}" method="post">
+    <form action="#" th:action="@{/home}" th:object="${user}" method="post">
     <h1 id="logintoregister">Welcome to PiggyBit</h1>
+        <p id="userName" class="text-center" th:field="*{userName}" type="text" th:text="'Username: ' + *{userName} "/>
+        <p id="savedUpMoney" class="text-center" th:field="*{savedUpMoney}" type="text" th:text="'Savings: $' + *{savedUpMoney} "/>
+        <p id="priceMargin" class="text-center" th:field="*{priceMargin}" type="text" th:text="'Your spendings are set to roundup to the nearest: $' + *{priceMargin} "/>
+        <p id="currency" class="text-center" th:field="*{currency}" type="text" th:text="'Your Currency: ' + *{currency} "/>
+        <p id="cryptocurrency" class="text-center" th:field="*{cryptocurrency}" type="text" th:text="'Cryptocurrency to invest: ' + *{cryptocurrency} "/>
+        <p id="lastInvestmentDate" class="text-center" th:field="*{lastInvestmentDate}" type="text" th:text="'Your Last Investment Date: ' + *{lastInvestmentDate} "/>
     <br/>
     <br/>
-    <button id="buttonlogintoregister">Settings</button>
+    <button id="buttonlogintoregister">Change Settings</button>
     </form>
+    <a href="/login"><button id="logout">Logout</button></a>
 </div>
 </body>
 </html>

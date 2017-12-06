@@ -8,7 +8,6 @@ public class eventLog {
 	private String currency;
 	private String cryptocurrency;
 	private int period;
-	private String date;
 
 	protected eventLog() {
 	}
@@ -18,7 +17,6 @@ public class eventLog {
 		this.currency = currency;
 		this.cryptocurrency = cryptocurrency;
 		this.period = period;
-		this.date = date;
 	}
 
 }

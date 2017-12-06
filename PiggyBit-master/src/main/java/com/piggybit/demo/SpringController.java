@@ -77,7 +77,6 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public String settingsResult(@ModelAttribute("setForm") SettingsForm setForm, BindingResult result,
 								 Model settingsForm) throws IOException, ParseException {
-		System.out.println("settings post");
 		if (result.hasErrors()) {
 			return "settingsForm";
 		}
@@ -100,7 +99,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		me.setInvestmentPeriod(recurringPeriod);
 
 		userController.update(me);
-		return "settingsConfirmed";
+		return homePage(settingsForm, me);
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -125,7 +124,6 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	public String homePage(Model model, User user) throws IOException, ParseException {
 		User userSession = userController.getByUserName(user.getUserName());
 		me = userSession;
-		System.out.print(userSession.toString());
 		model.addAttribute("user", me);
 		return "home";
 	}
@@ -151,7 +149,6 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		User found = userController.getByUserName(userName);
 		if( found != null){
 			if (found.getPassword() != null && password.equals(found.getPassword().toString())){
-				System.out.println(found.getPassword());
 			    me = found;
 				return homePage(model, me);
 			}

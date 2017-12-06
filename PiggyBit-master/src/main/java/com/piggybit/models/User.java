@@ -66,7 +66,8 @@ public class User implements UserDetails {
 	public int priceMargin;
 	public int investmentPeriod;
 	public List<eventLog> eventLogs;
-	public double savedUpMoney;
+	public double savedUpMoney = 0;
+	public String lastInvestmentDate = "No Investments Done Yet";
 
 	public User() {
 		super();
@@ -105,7 +106,6 @@ public class User implements UserDetails {
 		this.zipcode = zipcode;
 		this.timeZone = timeZone;
 		this.currency = currency;
-		this.savedUpMoney = 0;
 	}
 
 	public String getId() {
@@ -294,6 +294,14 @@ public class User implements UserDetails {
 
 	public void addSavedUpMoney(double savedUpMoney) {
 		this.savedUpMoney += savedUpMoney;
+	}
+
+	public String getLastInvestmentDate() {
+		return lastInvestmentDate;
+	}
+
+	public void setLastInvestmentDate(String lastInvestmentDate) {
+		this.lastInvestmentDate = lastInvestmentDate;
 	}
 
 	public List<eventLog> getEventLogs() {
