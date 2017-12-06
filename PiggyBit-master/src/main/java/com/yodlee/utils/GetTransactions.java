@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.LocalDate;
 
+import com.yodlee.beans.CobrandContext;
 import com.yodlee.beans.UserContext;
 import com.yodlee.parser.GSONParser;
 import com.yodlee.utils.HTTP;
@@ -13,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONArray; 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import java.io.IOException;
 
 import com.piggybit.models.User;
 
@@ -22,8 +25,8 @@ public class GetTransactions {
     String cobSession = "";
     String userSession = "";
     String userAccounts = "";
-    String cobrandLogin = "sbCobd74e196a9cfac3ff5c74d3ee313bf2de6a";
-    String cobrandPassword = "1734ef64-b099-492c-8797-b0b00c40a495";
+    public static String cobrandLogin = "sbCobd74e196a9cfac3ff5c74d3ee313bf2de6a";
+    public static String cobrandPassword = "1734ef64-b099-492c-8797-b0b00c40a495";
     //String accountId = "";
     String transactions = ""; 
     //String date_str = "2013-12-01";
@@ -35,7 +38,12 @@ public class GetTransactions {
     //System.out,println("Current date:");
     //System.out.println("Current date: " + date_str);
     
+    public String getCobsession(String cobrandjsonResponse) {
+        
+        return "";
+
     
+    }
     
     public String userLogin(String cobSession, String userName, String password) {
 
@@ -108,8 +116,8 @@ public class GetTransactions {
     
     //Return the investment amount where userAccounts is string obtained from getUserAccounts function
     public double getInvestment( String userAccounts, String cobSession, String userSession, 
-    		Date most_recent_investment, Date current_time, double margin) throws ParseException { 
-    		
+    		String most_recent_investment, String current_time, double margin) throws ParseException { 
+    		System.out.println("In getInvestment");
     		Double investment_total = 0.00;
     		
     		JSONParser parser = new JSONParser();
@@ -131,38 +139,46 @@ public class GetTransactions {
         		String accId = Long.toString((long)acc.get("id"));
         
         
-        		String current_time_str = String.format("%tF", current_time);
-	        String transactions = getTransactions(cobSession, userSession, accId, current_time_str);  
+        		//String current_time_str = String.format("%tF", current_time);
+        		
+        		//Where the account starts looking for transactions
+	        String transactions = getTransactions(cobSession, userSession, accId, most_recent_investment);  
 	        
 	        System.out.println("transactions: " + transactions);
 	        
 	        JSONParser parser2 = new JSONParser();
 			JSONObject json = (JSONObject) parser2.parse(transactions);
 			JSONArray transactions_list = (JSONArray) json.get("transaction");
-			System.out.println("Number of transactions: " + transactions_list.size());
 			
-		
-		
-		
-		
-			for (int i = 0; i < transactions_list.size(); i++) {
-				Double investment = 0.00;
-				JSONObject amounts = (JSONObject) transactions_list.get(i);
-				JSONObject amounts2 = (JSONObject) amounts.get("amount");
-				System.out.println("Transaction " + i + " : " + amounts2.get("amount") + " Transaction type:" + amounts.get("baseType"));
-				//System.out.println(amounts.get("baseType"));
-				if (amounts.get("baseType").equals("DEBIT")) {
-					investment = margin - ((Double.valueOf(amounts2.get("amount").toString()))%margin);
-					if (investment.equals(margin)) {
-						investment = 0.00;
-						counter = counter -1;
+			//No recent transactions as of most_recent_investment
+			if (transactions_list == null){
+				System.out.println("Account: " + accId + " has no recent transactions");
+				
+				
+			}
+			
+			else {
+				System.out.println("Number of transactions: " + transactions_list.size());
+			//For loop to parse through all transactions
+				for (int i = 0; i < transactions_list.size(); i++) {
+					Double investment = 0.00;
+					JSONObject amounts = (JSONObject) transactions_list.get(i);
+					JSONObject amounts2 = (JSONObject) amounts.get("amount");
+					System.out.println("Transaction " + i + " : " + amounts2.get("amount") + " Transaction type:" + amounts.get("baseType"));
+					//System.out.println(amounts.get("baseType"));
+					if (amounts.get("baseType").equals("DEBIT")) {
+						investment = margin - ((Double.valueOf(amounts2.get("amount").toString()))%margin);
+						if (investment.equals(margin)) {
+							investment = 0.00;
+							counter = counter -1;
+						}
+						counter = counter + 1;
+						System.out.println("investment amount: " + investment);
+						investment_total = investment + investment_total;
+						System.out.println("total investment: " + investment_total);
 					}
-					counter = counter + 1;
-					System.out.println("investment amount: " + investment);
-					investment_total = investment + investment_total;
-					System.out.println("total investment: " + investment_total);
 				}
-	        }
+			}
         }
 		//Make sure that the value is in 2 decimal places
 		investment_total = investment_total * 100;

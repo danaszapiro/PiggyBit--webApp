@@ -41,6 +41,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
+import java.time.LocalDate;
 
 @Controller
 @Configuration
@@ -90,7 +91,6 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public String settingsResult(@ModelAttribute("setForm") SettingsForm setForm, BindingResult result,
 								 Model settingsForm) throws IOException, ParseException {
-		System.out.println("settings post");
 		if (result.hasErrors()) {
 			return "settingsForm";
 		}
@@ -113,23 +113,20 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		me.setInvestmentPeriod(recurringPeriod);
 
 		userController.update(me);
-		return "settingsConfirmed";
+		return homePage(settingsForm, me);
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(Model model, User user) throws IOException, ParseException {
 		model.addAttribute("user", new User());
 		
-		//
-		String cobrandLogin = "sbCobd74e196a9cfac3ff5c74d3ee313bf2de6a";
-	    String cobrandPassword = "1734ef64-b099-492c-8797-b0b00c40a495";
-		
+		/*
 		GetTransactions getTrans = new GetTransactions();
 		
 		final String requestBody = "{" 
 				+ "\"cobrand\":{"
-				+ "\"cobrandLogin\":\"" + cobrandLogin + "\""+ "," 
-				+ "\"cobrandPassword\": " + "\"" + cobrandPassword + "\"" + "," 
+				+ "\"cobrandLogin\":\"" + getTrans.cobrandLogin + "\""+ "," 
+				+ "\"cobrandPassword\": " + "\"" + getTrans.cobrandPassword + "\"" + "," 
 				+ "\"locale\": \"en_US\"" 
 				+ "}" 
 			  + "}";
@@ -138,29 +135,14 @@ public class SpringController extends WebSecurityConfigurerAdapter {
         String cobrandjsonResponse = HTTP.doPost(coBrandLoginURL, requestBody);
         System.out.println("CobrandJSONResponse");
         System.out.println(cobrandjsonResponse);
-        
-       CobrandContext coBrand = (CobrandContext) GSONParser.handleJson(
+		
+        CobrandContext coBrand = (CobrandContext) GSONParser.handleJson(
 				cobrandjsonResponse, com.yodlee.beans.CobrandContext.class);
         
         String cobSession = coBrand.getSession().getCobSession();
-        
 		
         System.out.println("cobSession: " + cobSession);
-
-//Get user session using cobsession and cobrand login and password
-        String userSession = getTrans.userLogin(cobSession, "sbMemd74e196a9cfac3ff5c74d3ee313bf2de6a3", "sbMemd74e196a9cfac3ff5c74d3ee313bf2de6a3#123");
-        
-        System.out.println("usersession: " + userSession);
-		
-		//
-        String userAccounts = getTrans.getUserAccounts(cobSession, userSession);
-        System.out.println("userAccounts: " + userAccounts);
-        
-        Date time1 = new Date();
-        Date time2 = new Date();
-        Double investment_amount = getTrans.getInvestment(userAccounts, cobSession, userSession, time1, time2, 5);
-        System.out.println(investment_amount);
-		
+		*/
         
 		return "Register";
 	}
@@ -175,8 +157,46 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		me = user;
 		userController.insert(me);
 		
-		me.setYodleeUser("sbMemd74e196a9cfac3ff5c74d3ee313bf2de6a1");
-		me.setYodleePass("sbMemd74e196a9cfac3ff5c74d3ee313bf2de6a1#123");
+		GetTransactions getTrans = new GetTransactions();
+		
+		final String requestBody = "{" 
+				+ "\"cobrand\":{"
+				+ "\"cobrandLogin\":\"" + getTrans.cobrandLogin + "\""+ "," 
+				+ "\"cobrandPassword\": " + "\"" + getTrans.cobrandPassword + "\"" + "," 
+				+ "\"locale\": \"en_US\"" 
+				+ "}" 
+			  + "}";
+        
+        String coBrandLoginURL = "https://developer.api.yodlee.com/ysl/restserver/" + "v1/cobrand/login";
+        String cobrandjsonResponse = HTTP.doPost(coBrandLoginURL, requestBody);
+        System.out.println("CobrandJSONResponse");
+        System.out.println(cobrandjsonResponse);
+        
+       CobrandContext coBrand = (CobrandContext) GSONParser.handleJson(
+				cobrandjsonResponse, com.yodlee.beans.CobrandContext.class);
+        
+        String cobSession = coBrand.getSession().getCobSession();
+        System.out.println("cobSession: " + cobSession);
+
+//Get user session using cobsession and cobrand login and password
+        String userSession = getTrans.userLogin(cobSession, me.getYodleeUser(), me.getYodleePass());
+        System.out.println("usersession: " + userSession);
+		
+        String userAccounts = getTrans.getUserAccounts(cobSession, userSession);
+        System.out.println("userAccounts: " + userAccounts);
+        
+        Date register_time = new Date();
+        Date interval_time = new Date();
+        
+        LocalDate now = LocalDate.now();
+        LocalDate lastInvestmentPeriod = now.minusDays(2000);
+        System.out.println(now);
+        System.out.println(lastInvestmentPeriod);
+     
+        Double investment_amount = getTrans.getInvestment(userAccounts, cobSession, userSession, lastInvestmentPeriod.toString(), now.toString(), 5.00);
+        System.out.println(investment_amount);
+        
+        me.setSavedUpMoney(investment_amount);
 
 		
 		log.info("Inserted : " + user);
@@ -187,13 +207,18 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	public String homePage(Model model, User user) throws IOException, ParseException {
 		User userSession = userController.getByUserName(user.getUserName());
 		me = userSession;
-		System.out.print(userSession.toString());
 		model.addAttribute("user", me);
 		return "home";
 	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
 	public String homePage(@ModelAttribute("user") User user, BindingResult result, Model model) throws IOException, ParseException {
+		
+		User userSession = userController.getByUserName(user.getUserName());
+		me = userSession;
+		String yodleeUser = me.getYodleeUser();
+		String yodleePass = me.getYodleePass();
+		
 		return getSettings(model,me);
 	}
 
@@ -213,7 +238,6 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		User found = userController.getByUserName(userName);
 		if( found != null){
 			if (found.getPassword() != null && password.equals(found.getPassword().toString())){
-				System.out.println(found.getPassword());
 			    me = found;
 				return homePage(model, me);
 			}
