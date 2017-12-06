@@ -270,7 +270,7 @@ public class User implements UserDetails {
 		return priceMargin;
 	}
 
-	public void setPriceMargin(String priceMargin) {
+	public void setPriceMargin(int priceMargin) {
 		this.priceMargin = 1;
 	}
 
@@ -278,7 +278,7 @@ public class User implements UserDetails {
 		return investmentPeriod;
 	}
 
-	public void setInvestmentPeriod(String investmentPeriod) {
+	public void setInvestmentPeriod(int investmentPeriod) {
 		this.investmentPeriod = 1;
 	}
 

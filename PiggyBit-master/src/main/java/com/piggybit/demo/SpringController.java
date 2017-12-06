@@ -8,6 +8,12 @@ import com.piggybit.models.User;
 import com.piggybit.mongoDB.UserRepository;
 import com.piggybit.mongoDB.UserService;
 
+import com.yodlee.utils.*;
+
+import com.yodlee.beans.CobrandContext;
+import com.yodlee.parser.GSONParser;
+import com.yodlee.utils.HTTP;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.simple.parser.ParseException;
@@ -110,7 +116,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		String accessToken = TokenExtractor.getAccessToken(token);
 		String refreshToken = TokenExtractor.getRefreshToken(token);
 		String coinbaseAcc = Accounts.getAccounts(Accounts.getAccountInfo(accessToken));
-
+		
 		user.setAccessToken(accessToken);
 		user.setRefreshToken(refreshToken);
 		user.setAuthCode(auth);
@@ -123,6 +129,38 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		me.setCryptocurrency("BTN");
 		me.setPriceMargin(1);
 		me.setInvestmentPeriod(1);
+		
+		me.setYodleeUser("sbMemd74e196a9cfac3ff5c74d3ee313bf2de6a1");
+		me.setYodleePass("sbMemd74e196a9cfac3ff5c74d3ee313bf2de6a1#123");
+		String cobrandLogin = "sbCobd74e196a9cfac3ff5c74d3ee313bf2de6a";
+	    String cobrandPassword = "1734ef64-b099-492c-8797-b0b00c40a495";
+		
+		GetTransactions getTrans = new GetTransactions();
+		
+		final String requestBody = "{" 
+				+ "\"cobrand\":{"
+				+ "\"cobrandLogin\":\"" + cobrandLogin + "\""+ "," 
+				+ "\"cobrandPassword\": " + "\"" + cobrandPassword + "\"" + "," 
+				+ "\"locale\": \"en_US\"" 
+				+ "}" 
+			  + "}";
+        
+        String coBrandLoginURL = "https://developer.api.yodlee.com/ysl/restserver/" + "v1/cobrand/login";
+        String cobrandjsonResponse = HTTP.doPost(coBrandLoginURL, requestBody);
+        System.out.println(cobrandjsonResponse);
+        
+        CobrandContext coBrand = (CobrandContext) GSONParser.handleJson(
+				cobrandjsonResponse, com.yodlee.beans.CobrandContext.class);
+        
+        String cobSession = coBrand.getSession().getCobSession();
+        
+        System.out.println("cobSesssion: " + cobSession);
+
+//Get user session using cobsession and cobrand login and password
+        String userSession = getTrans.userLogin(cobSession, "sbMemd74e196a9cfac3ff5c74d3ee313bf2de6a3", "sbMemd74e196a9cfac3ff5c74d3ee313bf2de6a3#123");
+        
+        System.out.println("usersession: " + userSession);
+		
 		userController.insert(me);
 		log.info("Inserted : " + user);
 		return "Login";
