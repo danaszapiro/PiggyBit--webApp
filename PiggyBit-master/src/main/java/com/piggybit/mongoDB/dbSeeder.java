@@ -19,13 +19,16 @@ public class dbSeeder implements CommandLineRunner {
 	@Override
 	public void run(String... strings) throws Exception {
 
-		User user1 = new User("DanaSzapiro", "password", "Dana", "Szapiro", "danasz@bu.edu");
-		User user2 = new User("IvanWong", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
-		User user3 = new User("IvanWong2", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
+		List<User> users = userRepository.findAll();
+		if (users.isEmpty()) {
+			User user1 = new User("DanaSzapiro", "password", "Dana", "Szapiro", "danasz@bu.edu");
+			User user2 = new User("IvanWong", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
+			User user3 = new User("IvanWong2", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
 
-		List<User> users = Arrays.asList(user1, user2, user3);
-		userRepository.deleteAll();
-		userRepository.save(users);
+			users = Arrays.asList(user1, user2, user3);
+			userRepository.deleteAll();
+			userRepository.save(users);
+		}
 
 	}
 }

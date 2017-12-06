@@ -270,16 +270,16 @@ public class User implements UserDetails {
 		return priceMargin;
 	}
 
-	public void setPriceMargin(String priceMargin) {
-		this.priceMargin = 1;
+	public void setPriceMargin(int priceMargin) {
+		this.priceMargin = priceMargin;
 	}
 
 	public int getInvestmentPeriod() {
 		return investmentPeriod;
 	}
 
-	public void setInvestmentPeriod(String investmentPeriod) {
-		this.investmentPeriod = 1;
+	public void setInvestmentPeriod(int investmentPeriod) {
+		this.investmentPeriod = investmentPeriod;
 	}
 
 	public List<eventLog> getEventLogs() {

@@ -4,11 +4,18 @@ public class SettingsForm {
 
 	private String currency;
 	private String crypto;
-	private String priceMargin;
-	private String recurringPeriod;
+	private int priceMargin;
+	private int recurringPeriod;
 
 	public SettingsForm() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public SettingsForm(String currency, String crypto, int priceMargin, int recurringPeriod) {
+		this.currency = currency;
+		this.crypto = crypto;
+		this.priceMargin = priceMargin;
+		this.recurringPeriod = recurringPeriod;
 	}
 
 	public String getCurrency() {
@@ -27,19 +34,19 @@ public class SettingsForm {
 		this.crypto = crypto;
 	}
 
-	public String getPriceMargin() {
+	public int getPriceMargin() {
 		return priceMargin;
 	}
 
-	public void setPriceMargin(String priceMargin) {
+	public void setPriceMargin(int priceMargin) {
 		this.priceMargin = priceMargin;
 	}
 
-	public String getRecurringPeriod() {
+	public int getRecurringPeriod() {
 		return recurringPeriod;
 	}
 
-	public void setRecurringPeriod(String recurringPeriod) {
+	public void setRecurringPeriod(int recurringPeriod) {
 		this.recurringPeriod = recurringPeriod;
 	}
 

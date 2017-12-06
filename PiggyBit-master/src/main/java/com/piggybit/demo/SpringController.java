@@ -58,20 +58,39 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String getSettings(Model model, User user) {
 
-		model.addAttribute("settingsForm", new SettingsForm());
-		return "settingsForm";
+
+		User userSession = userController.getByUserName(user.getUserName());
+		me = userSession;
+		model.addAttribute("user", userSession);
+		System.out.println(userSession.getCurrency());
+		System.out.println(userSession.toString());
+		if(userSession != null && userSession.getCurrency() !=null){
+			String currency = userSession.getCurrency();
+			String crypto = userSession.getCryptocurrency();
+			int priceMargin = userSession.getPriceMargin();
+			int recurringPeriod = userSession.getInvestmentPeriod();
+			SettingsForm setForm = new SettingsForm(currency, crypto, priceMargin, recurringPeriod);
+			model.addAttribute("settingsForm",setForm);
+			return "settingsForm";
+		}
+		else {
+			System.out.println("settings get no");
+			model.addAttribute("settingsForm", new SettingsForm());
+			return "settingsForm";
+		}
 	}
 
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
 	public String settingsResult(@ModelAttribute("setForm") SettingsForm setForm, BindingResult result,
 								 Model settingsForm) throws IOException, ParseException {
+		System.out.println("settings post");
 		if (result.hasErrors()) {
 			return "settingsForm";
 		}
 		String currency = setForm.getCurrency();
 		String crypto = setForm.getCrypto();
-		String priceMargin = setForm.getPriceMargin();
-		String recurringPeriod = setForm.getRecurringPeriod();
+		int priceMargin = setForm.getPriceMargin();
+		int recurringPeriod = setForm.getRecurringPeriod();
 
 		settingsForm.addAttribute("currency", currency);
 		settingsForm.addAttribute("crypto", crypto);
@@ -79,53 +98,37 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		settingsForm.addAttribute("recurringPeriod", recurringPeriod);
 
 		/*int period = Integer.valueOf(recurringPeriod);
-		int price = Integer.valueOf(priceMargin);
+		int price = Integer.valueOf(priceMargin);*/
 
 		me.setCurrency(currency);
 		me.setCryptocurrency(crypto);
-		me.setPriceMargin(price);
-		me.setInvestmentPeriod(period);
+		me.setPriceMargin(priceMargin);
+		me.setInvestmentPeriod(recurringPeriod);
 
 		userController.update(me);
-		userRepository.save(me);*/
-
 		return "settingsConfirmed";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(Model model, User user) throws IOException, ParseException {
-
+		model.addAttribute("user", new User());
 		return "Register";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerSuccessful(@ModelAttribute("user") User user, BindingResult result, Model model)
 			throws IOException, ParseException {
+		System.out.println("reg post");
 		if (result.hasErrors()) {
 			return "Register";
 		}
-
-		String auth = user.getAuthCode();
-		String token = TokenExtractor.getToken(auth);
-		String accessToken = TokenExtractor.getAccessToken(token);
-		String refreshToken = TokenExtractor.getRefreshToken(token);
-		String coinbaseAcc = Accounts.getAccounts(Accounts.getAccountInfo(accessToken));
-
-		user.setAccessToken(accessToken);
-		user.setRefreshToken(refreshToken);
-		user.setAuthCode(auth);
-		user.setCoinbaseAccount(coinbaseAcc);
-		// repository.save(user);
-		//mongoOps.insert(user);
-
+		System.out.println("reg 2");
+		System.out.println(model.toString());
+		System.out.println(user.toString());
 		me = user;
-		me.setCurrency("USD");
-		me.setCryptocurrency("BTN");
-		me.setPriceMargin(1);
-		me.setInvestmentPeriod(1);
 		userController.insert(me);
 		log.info("Inserted : " + user);
-		return "Login";
+		return userLogin(model);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
