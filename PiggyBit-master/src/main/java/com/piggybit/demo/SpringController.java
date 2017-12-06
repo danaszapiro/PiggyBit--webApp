@@ -65,7 +65,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		if(userSession != null && userSession.getCurrency() !=null){
 			String currency = userSession.getCurrency();
 			String crypto = userSession.getCryptocurrency();
-			int priceMargin = userSession.getPriceMargin();
+			double priceMargin = userSession.getPriceMargin();
 			int recurringPeriod = userSession.getInvestmentPeriod();
 			SettingsForm setForm = new SettingsForm(currency, crypto, priceMargin, recurringPeriod);
 			model.addAttribute("settingsForm",setForm);
@@ -85,7 +85,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		}
 		String currency = setForm.getCurrency();
 		String crypto = setForm.getCrypto();
-		int priceMargin = setForm.getPriceMargin();
+		double priceMargin = setForm.getPriceMargin();
 		int recurringPeriod = setForm.getRecurringPeriod();
 
 		settingsForm.addAttribute("currency", currency);
@@ -130,7 +130,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		me.setRefreshToken(refreshToken);
 		me.setCoinbaseAccount(coinbaseAcc);
 		userController.insert(me);
-		log.info("Inserted : " + user);
+		log.info("Inserted : " + me);
 		
 		return userLogin(model);
 	}
@@ -140,16 +140,12 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		User userSession = userController.getByUserName(user.getUserName());
 		me = userSession;
 		
-		System.out.println(me.getFirstName());
 		LocalDate currentDate = new LocalDate();
 		LocalDate lastDate = user.getLastInvestmentDate();
 		int daysBetween = Days.daysBetween(lastDate , currentDate ).getDays();
-		System.out.println(lastDate.toString());
 		String refreshToken = me.getRefreshToken(); 
 		String accessToken = TokenExtractor.getAccessToken(TokenExtractor.refreshTheToken(refreshToken));
-		System.out.println(refreshToken);
 		System.out.println(TokenExtractor.refreshTheToken(refreshToken));
-		System.out.println(accessToken);
 		double amount = me.getSavedUpMoney();
 		String currency = me.getCurrency();
 		String accountId = me.getCoinbaseAccount();
@@ -157,6 +153,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 			System.out.println(Buys.makeABuy(accessToken, amount, currency, accountId));
 			me.setSavedUpMoney(0);
 			me.setLastInvestmentDate(currentDate);
+			userController.update(me);
 		}
 		
 		model.addAttribute("user", me);

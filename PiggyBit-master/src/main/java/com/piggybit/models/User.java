@@ -9,6 +9,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -64,12 +66,11 @@ public class User implements UserDetails {
 	public String authCode;
 	public String currency;
 	public String cryptocurrency = "BTC";
-	public int priceMargin = 1;
+	public double priceMargin = 5.00;
 	public int investmentPeriod = 7;
 	public List<eventLog> eventLogs;
 	public double savedUpMoney = 0;
-	public LocalDate lastInvestmentDate = new LocalDate();
-
+	public LocalDate lastInvestmentDate = new LocalDate("2017-03-01");
 	public User() {
 		super();
 	}
@@ -230,7 +231,7 @@ public class User implements UserDetails {
 	}
 
 	public String getRefreshToken() {
-		return refreshToken;
+		return this.refreshToken;
 	}
 
 	public void setRefreshToken(String refreshToken) {
@@ -269,11 +270,11 @@ public class User implements UserDetails {
 		this.cryptocurrency = cryptocurrency;
 	}
 
-	public int getPriceMargin() {
+	public double getPriceMargin() {
 		return priceMargin;
 	}
 
-	public void setPriceMargin(int priceMargin) {
+	public void setPriceMargin(double priceMargin) {
 		this.priceMargin = priceMargin;
 	}
 
