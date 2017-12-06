@@ -140,11 +140,16 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		User userSession = userController.getByUserName(user.getUserName());
 		me = userSession;
 		
+		System.out.println(me.getFirstName());
 		LocalDate currentDate = new LocalDate();
 		LocalDate lastDate = user.getLastInvestmentDate();
 		int daysBetween = Days.daysBetween(lastDate , currentDate ).getDays();
+		System.out.println(lastDate.toString());
 		String refreshToken = me.getRefreshToken(); 
-		String accessToken = TokenExtractor.refreshTheToken(refreshToken);
+		String accessToken = TokenExtractor.getAccessToken(TokenExtractor.refreshTheToken(refreshToken));
+		System.out.println(refreshToken);
+		System.out.println(TokenExtractor.refreshTheToken(refreshToken));
+		System.out.println(accessToken);
 		double amount = me.getSavedUpMoney();
 		String currency = me.getCurrency();
 		String accountId = me.getCoinbaseAccount();
