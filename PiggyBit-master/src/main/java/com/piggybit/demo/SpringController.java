@@ -139,7 +139,7 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		me = userSession;
 		
 		LocalDate currentDate = new LocalDate();
-		LocalDate lastDate = user.getLastInvestmentDate();
+		LocalDate lastDate = me.getLastInvestmentDate();
 		int daysBetween = Days.daysBetween(lastDate , currentDate ).getDays();
 		String refreshToken = me.getRefreshToken(); 
 		String fullToken = TokenExtractor.refreshTheToken(refreshToken);
@@ -148,10 +148,13 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		me.setAccessToken(accessToken);
 		me.setRefreshToken(refreshToken);
 		double amount = me.getSavedUpMoney();
-		String currency = me.getCurrency();
+		String crypto = me.getCryptocurrency();
 		String accountId = me.getCoinbaseAccount();
+		System.out.println(accessToken);
+		System.out.println(fullToken);
+		System.out.println(Buys.makeABuy(accessToken, amount, crypto, accountId));
 		if(daysBetween >= me.getInvestmentPeriod() ) {
-			System.out.println(Buys.makeABuy(accessToken, amount, currency, accountId));
+			System.out.println(Buys.makeABuy(accessToken, amount, crypto, accountId));
 			me.setSavedUpMoney(0);
 			me.setLastInvestmentDate(currentDate);
 		}
