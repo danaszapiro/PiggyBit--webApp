@@ -29,7 +29,7 @@ public final class CoinbaseTest {
 		final OAuth20Service service = new ServiceBuilder(
 				"778c0d1ec98e98f35c4fdd30d83cb813735ae7afa0ff13f8e74c84311d4f80b8")
 						.apiSecret("8c936687c9bd55712f15e962ed84f32811594c41e8f3cc69ea458445d539729b").scope(SCOPE)
-						.callback("http://localhost:8080/Callback/").build(CoinbaseApi.instance());
+						.callback("http://localhost:8084/oauth_code/").build(CoinbaseApi.instance());
 		final Scanner in = new Scanner(System.in);
 
 		System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");

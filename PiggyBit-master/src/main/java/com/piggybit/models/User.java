@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -67,7 +68,7 @@ public class User implements UserDetails {
 	public int investmentPeriod;
 	public List<eventLog> eventLogs;
 	public double savedUpMoney = 0;
-	public String lastInvestmentDate = "No Investments Done Yet";
+	public LocalDate lastInvestmentDate = new LocalDate();
 
 	public User() {
 		super();
@@ -296,12 +297,12 @@ public class User implements UserDetails {
 		this.savedUpMoney += savedUpMoney;
 	}
 
-	public String getLastInvestmentDate() {
+	public LocalDate getLastInvestmentDate() {
 		return lastInvestmentDate;
 	}
 
-	public void setLastInvestmentDate(String lastInvestmentDate) {
-		this.lastInvestmentDate = lastInvestmentDate;
+	public void setLastInvestmentDate(LocalDate newInvestmentDate) {
+		this.lastInvestmentDate = newInvestmentDate;
 	}
 
 	public List<eventLog> getEventLogs() {

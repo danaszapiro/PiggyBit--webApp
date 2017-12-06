@@ -182,7 +182,7 @@ label 				 {
 		<p>Country: <input type="text" th:field="*{country}" /></p>
 		<p>Timezone: <input type="text" th:field="*{timeZone}" /></p>
 		<p>Currency: <input type="text" th:field="*{currency}" /></p>
-		<p>Paste the auth code in the URL box after authorizing PiggyBit <a th:href="@{https://www.coinbase.com/oauth/authorize?client_id=778c0d1ec98e98f35c4fdd30d83cb813735ae7afa0ff13f8e74c84311d4f80b8&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8080%2FCallback%2F&amp;response_type=code&amp;scope=wallet%3Auser%3Aemail+wallet%3Auser%3Aread+wallet%3Abuys%3Aread+wallet%3Abuys%3Acreate+wallet%3Aaccounts%3Aread+wallet%3Atransactions%3Aread}">here:</a><input type = "text" th:field="*{authCode}" /></p>"
+		<p>Paste the auth code in the URL box after authorizing PiggyBit <a th:href="@{https://www.coinbase.com/oauth/authorize?client_id=778c0d1ec98e98f35c4fdd30d83cb813735ae7afa0ff13f8e74c84311d4f80b8&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8084%2Foauth_code%2F&amp;response_type=code&amp;scope=wallet%3Auser%3Aemail+wallet%3Auser%3Aread+wallet%3Abuys%3Aread+wallet%3Abuys%3Acreate+wallet%3Aaccounts%3Aread+wallet%3Atransactions%3Aread}">here:</a><input type = "text" th:field="*{authCode}" /></p>"
 	    <button id="buttonlogintoregister">Register</button>
 	  </form>
 	  </div>

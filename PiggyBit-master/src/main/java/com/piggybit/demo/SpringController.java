@@ -1,6 +1,7 @@
 package com.piggybit.demo;
 
 import com.coinbase.authenticatedAPIcalls.Accounts;
+import com.coinbase.authenticatedAPIcalls.Buys;
 import com.coinbase.services.TokenExtractor;
 import com.mongodb.MongoClient;
 import com.piggybit.models.SettingsForm;
@@ -10,6 +11,8 @@ import com.piggybit.mongoDB.UserService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import org.json.simple.parser.ParseException;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -115,8 +118,20 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 			return "Register";
 		}
 		me = user;
+		
+		String code = me.getAuthCode();
+		System.out.println(code);
+		String fullToken = TokenExtractor.getToken(code);
+		System.out.println(fullToken);
+		String accessToken = TokenExtractor.getAccessToken(fullToken);
+		String refreshToken = TokenExtractor.getRefreshToken(fullToken);
+		String coinbaseAcc = Accounts.getAccounts(Accounts.getAccountInfo(accessToken));
+		me.setAccessToken(accessToken);
+		me.setRefreshToken(refreshToken);
+		me.setCoinbaseAccount(coinbaseAcc);
 		userController.insert(me);
 		log.info("Inserted : " + user);
+		
 		return userLogin(model);
 	}
 
@@ -124,6 +139,21 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	public String homePage(Model model, User user) throws IOException, ParseException {
 		User userSession = userController.getByUserName(user.getUserName());
 		me = userSession;
+		
+		LocalDate currentDate = new LocalDate();
+		LocalDate lastDate = user.getLastInvestmentDate();
+		int daysBetween = Days.daysBetween(lastDate , currentDate ).getDays();
+		String refreshToken = me.getRefreshToken(); 
+		String accessToken = TokenExtractor.refreshTheToken(refreshToken);
+		double amount = me.getSavedUpMoney();
+		String currency = me.getCurrency();
+		String accountId = me.getCoinbaseAccount();
+		if(daysBetween >= me.getInvestmentPeriod() ) {
+			System.out.println(Buys.makeABuy(accessToken, amount, currency, accountId));
+			me.setSavedUpMoney(0);
+			me.setLastInvestmentDate(currentDate);
+		}
+		
 		model.addAttribute("user", me);
 		return "home";
 	}
