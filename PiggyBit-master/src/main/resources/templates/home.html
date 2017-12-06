@@ -169,13 +169,13 @@ label 				 {
 <body>
 <div class="box">
     <h1 id="logintoregister"><p th:text="'Welcome' + ${userName} + '!'"></p></h1>
-        <div class="group">
-            <p th:text="'Your set Crypto Currency is: ' + ${crypto != null ? crypto : 'NOT FOUND'} "/>
-            <p th:text="'Your set Fiat Currency is: ' + ${currency != null ? currency : 'NOT FOUND'} "/>
-            <p th:text="'Your investment margin is: ' + ${priceMargin != null ? priceMargin : 'NOT FOUND'} "/>
-            <p th:text="'Your investment margin is: ' + ${recurringPeriod != null ? recurringPeriod : 'NOT FOUND'} "/>
-            <p th:text="'Since ' + ${ } + ', you have invested: ' + ${ } "/>
-            <p th:text="'So far you have made: ' + ${ } "/>
+        <div class="group" th:object="${user}">
+            <p class = "text-center" th:text="'Your set Crypto Currency is: ' + ${crypto != null ? crypto : 'NOT FOUND'} "/>
+            <p class = "text-center" th:text="'Your set Fiat Currency is: ' + ${currency != null ? currency : 'NOT FOUND'} "/>
+            <p class = "text-center" th:text="'Your investment margin is: ' + ${priceMargin != null ? priceMargin : 'NOT FOUND'} "/>
+            <p class = "text-center" th:text="'Your investment margin is: ' + ${recurringPeriod != null ? recurringPeriod : 'NOT FOUND'} "/>
+            <p class = "text-center" th:text="'Since ' + ${ } + ', you have invested: ' + ${ } "/>
+            <p class = "text-center" th:text="'So far you have made: ' + ${ } "/>
         </div>
     <button>Invest</button>
     <button th:action="@{/settings}">Change Settings</button>
