@@ -17,7 +17,7 @@ html{
 .box{
 	position: relative;
 	margin: auto;
-	height: 365px;
+	height: 400px;
   top: 40px;
 	left: 0;
 	z-index: 200;
@@ -160,12 +160,20 @@ label 				 {
 	from { background:#5264AE; }
   to 	{ width:0; background:transparent; }
 }
+.text-center {
+	text-align:center;
+}
+.red-text {
+	color: red;
+}
     </style>
 </head>
 <body>
 <div class="box">
 	<form action="#" th:action="@{/login}" th:object="${user}" method="post">
     <h1 id="logintoregister">Login</h1>
+    <p class="text-center red-text">Login invalid, please try again.</p>
+    <br/>
     <div class="group">
         <input class="inputMaterial" id ='userName' th:field:="*{userName}" type="text" th:required="required"/>
         <span class="highlight"></span>
