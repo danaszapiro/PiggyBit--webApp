@@ -25,8 +25,8 @@ public class GetTransactions {
     String cobSession = "";
     String userSession = "";
     String userAccounts = "";
-    public static String cobrandLogin = "sbCobd74e196a9cfac3ff5c74d3ee313bf2de6a";
-    public static String cobrandPassword = "1734ef64-b099-492c-8797-b0b00c40a495";
+    public String cobrandLogin = "sbCobd74e196a9cfac3ff5c74d3ee313bf2de6a";
+    public String cobrandPassword = "1734ef64-b099-492c-8797-b0b00c40a495";
     //String accountId = "";
     String transactions = ""; 
     //String date_str = "2013-12-01";

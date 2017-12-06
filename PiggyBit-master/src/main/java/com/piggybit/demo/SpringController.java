@@ -4,10 +4,15 @@ import com.coinbase.authenticatedAPIcalls.Accounts;
 import com.coinbase.authenticatedAPIcalls.Buys;
 import com.coinbase.services.TokenExtractor;
 import com.mongodb.MongoClient;
+import com.piggybit.models.EventLog;
 import com.piggybit.models.SettingsForm;
 import com.piggybit.models.User;
 import com.piggybit.mongoDB.UserRepository;
 import com.piggybit.mongoDB.UserService;
+import com.yodlee.beans.CobrandContext;
+import com.yodlee.parser.GSONParser;
+import com.yodlee.utils.GetTransactions;
+import com.yodlee.utils.HTTP;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -138,6 +143,53 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		User userSession = userController.getByUserName(user.getUserName());
 		me = userSession;
 		
+		model.addAttribute("user", me);
+
+		// Get cobrandSession /////////////////////////
+		GetTransactions getTrans = new GetTransactions();
+
+		final String requestBody = "{" 
+		+ "\"cobrand\":{"
+		+ "\"cobrandLogin\":\"" + getTrans.cobrandLogin + "\""+ "," 
+		+ "\"cobrandPassword\": " + "\"" + getTrans.cobrandPassword + "\"" + "," 
+		+ "\"locale\": \"en_US\"" 
+		+ "}" 
+		+ "}";
+		
+		String coBrandLoginURL = "https://developer.api.yodlee.com/ysl/restserver/" + "v1/cobrand/login";
+		String cobrandjsonResponse = HTTP.doPost(coBrandLoginURL, requestBody);
+		System.out.println("CobrandJSONResponse");
+		System.out.println(cobrandjsonResponse);
+		
+		CobrandContext coBrand = (CobrandContext) GSONParser.handleJson(
+		cobrandjsonResponse, com.yodlee.beans.CobrandContext.class);
+		
+		String cobSession = coBrand.getSession().getCobSession();
+		System.out.println("cobSession: " + cobSession);
+
+		//Get user session using cobsession and cobrand login and password  //////////////////////////
+		String yodleeUsersession = getTrans.userLogin(cobSession, me.getYodleeUser(), me.getYodleePass());
+		System.out.println("usersession: " + yodleeUsersession);
+
+		String userAccounts = getTrans.getUserAccounts(cobSession, yodleeUsersession);
+		System.out.println("userAccounts: " + userAccounts);
+		
+		String old_date = "2017-03-01";
+
+		LocalDate now = LocalDate.now();
+		LocalDate lastInvestmentPeriod = now.minusDays(900);
+		System.out.println(now);
+		System.out.println(lastInvestmentPeriod);
+
+		 //Get investment amount //////////////////////////////////////////////////////
+		//lastInvestmentPeriod.toString()
+		Double investment_amount = getTrans.getInvestment(userAccounts, cobSession, yodleeUsersession, 
+		me.getLastInvestmentDate().toString(), me.getPriceMargin());
+		System.out.println(investment_amount);
+
+		me.setSavedUpMoney(investment_amount);
+		userController.update(me);
+		
 		LocalDate currentDate = new LocalDate();
 		LocalDate lastDate = me.getLastInvestmentDate();
 		int daysBetween = Days.daysBetween(lastDate , currentDate ).getDays();
@@ -150,13 +202,14 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 		double amount = me.getSavedUpMoney();
 		String crypto = me.getCryptocurrency();
 		String accountId = me.getCoinbaseAccount();
-		System.out.println(accessToken);
-		System.out.println(fullToken);
-		System.out.println(Buys.makeABuy(accessToken, amount, crypto, accountId));
+		String currency = me.getCurrency();
+		int period = me.getInvestmentPeriod();
 		if(daysBetween >= me.getInvestmentPeriod() ) {
 			System.out.println(Buys.makeABuy(accessToken, amount, crypto, accountId));
 			me.setSavedUpMoney(0);
 			me.setLastInvestmentDate(currentDate);
+			EventLog newPurchase = new EventLog(amount, currency, crypto, period, currentDate.toString());
+			me.addEventLogs(newPurchase);
 		}
 		userController.update(me);
 		model.addAttribute("user", me);
