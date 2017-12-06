@@ -116,7 +116,7 @@ public class GetTransactions {
     
     //Return the investment amount where userAccounts is string obtained from getUserAccounts function
     public double getInvestment( String userAccounts, String cobSession, String userSession, 
-    		String most_recent_investment, String current_time, double margin) throws ParseException { 
+    		String most_recent_investment, double margin) throws ParseException { 
     		System.out.println("In getInvestment");
     		Double investment_total = 0.00;
     		
@@ -142,6 +142,7 @@ public class GetTransactions {
         		//String current_time_str = String.format("%tF", current_time);
         		
         		//Where the account starts looking for transactions
+        		//Time is being used here
 	        String transactions = getTransactions(cobSession, userSession, accId, most_recent_investment);  
 	        
 	        System.out.println("transactions: " + transactions);

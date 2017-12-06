@@ -120,29 +120,6 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 	public String register(Model model, User user) throws IOException, ParseException {
 		model.addAttribute("user", new User());
 		
-		/*
-		GetTransactions getTrans = new GetTransactions();
-		
-		final String requestBody = "{" 
-				+ "\"cobrand\":{"
-				+ "\"cobrandLogin\":\"" + getTrans.cobrandLogin + "\""+ "," 
-				+ "\"cobrandPassword\": " + "\"" + getTrans.cobrandPassword + "\"" + "," 
-				+ "\"locale\": \"en_US\"" 
-				+ "}" 
-			  + "}";
-        
-        String coBrandLoginURL = "https://developer.api.yodlee.com/ysl/restserver/" + "v1/cobrand/login";
-        String cobrandjsonResponse = HTTP.doPost(coBrandLoginURL, requestBody);
-        System.out.println("CobrandJSONResponse");
-        System.out.println(cobrandjsonResponse);
-		
-        CobrandContext coBrand = (CobrandContext) GSONParser.handleJson(
-				cobrandjsonResponse, com.yodlee.beans.CobrandContext.class);
-        
-        String cobSession = coBrand.getSession().getCobSession();
-		
-        System.out.println("cobSession: " + cobSession);
-		*/
         
 		return "Register";
 	}
@@ -156,7 +133,19 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 
 		me = user;
 		userController.insert(me);
+
 		
+		log.info("Inserted : " + user);
+		return userLogin(model);
+	}
+
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String homePage(Model model, User user) throws IOException, ParseException {
+		User userSession = userController.getByUserName(user.getUserName());
+		me = userSession;
+		model.addAttribute("user", me);
+	
+// Get cobrandSession /////////////////////////
 		GetTransactions getTrans = new GetTransactions();
 		
 		final String requestBody = "{" 
@@ -178,36 +167,30 @@ public class SpringController extends WebSecurityConfigurerAdapter {
         String cobSession = coBrand.getSession().getCobSession();
         System.out.println("cobSession: " + cobSession);
 
-//Get user session using cobsession and cobrand login and password
-        String userSession = getTrans.userLogin(cobSession, me.getYodleeUser(), me.getYodleePass());
-        System.out.println("usersession: " + userSession);
+//Get user session using cobsession and cobrand login and password  //////////////////////////
+        String yodleeUsersession = getTrans.userLogin(cobSession, me.getYodleeUser(), me.getYodleePass());
+        System.out.println("usersession: " + yodleeUsersession);
 		
-        String userAccounts = getTrans.getUserAccounts(cobSession, userSession);
+        String userAccounts = getTrans.getUserAccounts(cobSession, yodleeUsersession);
         System.out.println("userAccounts: " + userAccounts);
         
-        Date register_time = new Date();
-        Date interval_time = new Date();
+        String old_date = "2017-03-01";
         
         LocalDate now = LocalDate.now();
-        LocalDate lastInvestmentPeriod = now.minusDays(2000);
+        LocalDate lastInvestmentPeriod = now.minusDays(900);
         System.out.println(now);
         System.out.println(lastInvestmentPeriod);
-     
-        Double investment_amount = getTrans.getInvestment(userAccounts, cobSession, userSession, lastInvestmentPeriod.toString(), now.toString(), 5.00);
+
+ //Get investment amount //////////////////////////////////////////////////////
+        //lastInvestmentPeriod.toString()
+        Double investment_amount = getTrans.getInvestment(userAccounts, cobSession, yodleeUsersession, 
+        		old_date, 5.00);
         System.out.println(investment_amount);
         
         me.setSavedUpMoney(investment_amount);
-
+        me.setLastInvestmentDate(lastInvestmentPeriod.toString());
+        userController.update(me);
 		
-		log.info("Inserted : " + user);
-		return userLogin(model);
-	}
-
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String homePage(Model model, User user) throws IOException, ParseException {
-		User userSession = userController.getByUserName(user.getUserName());
-		me = userSession;
-		model.addAttribute("user", me);
 		return "home";
 	}
 
