@@ -168,31 +168,17 @@ label 				 {
 </head>
 <body>
 <div class="box">
-    <h1 id="logintoregister">Welcome <strong>${user}</strong></h1>
-    <br/>
-    <br/>
-    <div class="group">
-        <input class="inputMaterial" id ='crypto' th:field:="*{crypto}" th:text="'Crypto currency requested: ' + ${crypto != null ? crypto : 'NOT FOUND'} ">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Crypto</label>
-    </div>
-    <div class="group">
-        <input class="inputMaterial" id="result" th:field="*{result}" th:text="'Price for ' + ${crypto != null ? crypto : 'NOT FOUND'} + ' in ' + ${currency != null ? currency : 'NOT FOUND'} + ' is: ' + ${price != null ? price : 'NOT FOUND'} " >
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Savings</label>
-    </div>
-    <div class="group">
-        <input class="inputMaterial" id="result" th:field="*{ }" th:text="'Since ' + ${ } + ', you have accumulated ' + ${ } + ' is: ' + ${ } " >
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Savings</label>
-    </div>
-    
-
-    <button id="buttonlogintoregister">Invest</button>
-    <button id="buttonlogintoregister" th:action="@{/settings}">Change Settings</button>
+    <h1 id="logintoregister"><p th:text="'Welcome' + ${userName} + '!'"></p></h1>
+        <div class="group">
+            <p th:text="'Your set Crypto Currency is: ' + ${crypto != null ? crypto : 'NOT FOUND'} "/>
+            <p th:text="'Your set Fiat Currency is: ' + ${currency != null ? currency : 'NOT FOUND'} "/>
+            <p th:text="'Your investment margin is: ' + ${priceMargin != null ? priceMargin : 'NOT FOUND'} "/>
+            <p th:text="'Your investment margin is: ' + ${recurringPeriod != null ? recurringPeriod : 'NOT FOUND'} "/>
+            <p th:text="'Since ' + ${ } + ', you have invested: ' + ${ } "/>
+            <p th:text="'So far you have made: ' + ${ } "/>
+        </div>
+    <button>Invest</button>
+    <button th:action="@{/settings}">Change Settings</button>
     <p class="text-center"><a th:action="@{/login}" value="/logout">Logout</a></p>
 </div>
 </body>

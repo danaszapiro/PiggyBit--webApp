@@ -343,34 +343,7 @@ label 				 {
 	  </form>
 	  </div>
 </body>
-<script>
-var cont = 0;
 
-function register(){
-
-     cont++;
-
-		if(cont==1){
-		 	$('.box').animate({height:'1200px'}, 550);
-			$('.show').css('display','block');
-      $('.box').animate({width:'400px'}, 550);
-			$('#logintoregister').text('Register');
-			$('#buttonlogintoregister').text('Register');
-			$('#plogintoregister').text("Login");
-		}
-		else
-		{
-			$('.show').css('display','none');
-			$('.box').animate({height:'365px'}, 500);
-      $('.box').animate({width:'400px'}, 550);
-			$('#logintoregister').text('Register');
-			$('#buttonlogintoregister').text('Login');
-			$('#plogintoregister').text("New to PiggyBit?");
-			$('#textchange').text('Register');
-			cont = 0;
-		}
-}
-</script>
 </html>
 
 
