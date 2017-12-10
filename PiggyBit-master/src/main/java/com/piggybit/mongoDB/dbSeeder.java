@@ -20,7 +20,7 @@ public class dbSeeder implements CommandLineRunner {
 	public void run(String... strings) throws Exception {
 
 		List<User> users = userRepository.findAll();
-		if (users.isEmpty()) {
+		//if (users.isEmpty()) {
 			User user1 = new User("DanaSzapiro", "password", "Dana", "Szapiro", "danasz@bu.edu");
 			User user2 = new User("IvanWong", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
 			User user3 = new User("IvanWong2", "Password2", "Ivan", "Wong", "Ivan@bu.edu");
@@ -28,7 +28,7 @@ public class dbSeeder implements CommandLineRunner {
 			users = Arrays.asList(user1, user2, user3);
 			userRepository.deleteAll();
 			userRepository.save(users);
-		}
+		//}
 
 	}
 }

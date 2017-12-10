@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -21,29 +22,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 	/**
 	 * 
-	 */
+	 */	
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	public String id;
 
 	@NotEmpty
-    @Size(min=6, max=20)
+	@Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})", message="Username is invalid")
 	public String userName;
     
 	@NotEmpty
-    @Size(min=6, max=20)
+	@Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})", message="Password is invalid")
 	public String password;
     
 	@NotEmpty
-    @Size(min=1)
+    @Size(min=1, message="First name must be at least one character")
 	public String firstName;
     
 	@NotEmpty
-    @Size(min=1)
+    @Size(min=1, message="Last name must be at least one character")
 	public String lastName;
     
-    @NotEmpty @Email
+    @NotNull 
+    @Email 
+    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="Email address is invalid")
 	public String email;
 	
     @NotEmpty
