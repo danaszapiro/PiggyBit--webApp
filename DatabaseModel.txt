@@ -34,7 +34,7 @@ public class eventLog {
     private int period;
     }
     
- //YodleeLogin class values
+ //YodleeLogin values
  public class YodleeLogin {
     private String cobSession;
     private String cobLogin;
