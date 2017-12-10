@@ -208,8 +208,6 @@ public class SpringController extends WebSecurityConfigurerAdapter {
 			System.out.println(Buys.makeABuy(accessToken, amount, crypto, accountId));
 			me.setSavedUpMoney(0);
 			me.setLastInvestmentDate(currentDate);
-			EventLog newPurchase = new EventLog(amount, currency, crypto, period, currentDate.toString());
-			me.addEventLogs(newPurchase);
 		}
 		userController.update(me);
 		model.addAttribute("user", me);
