@@ -1,7 +1,6 @@
 # PiggyBit--webApp
 
-run application
-hosted on localhost:8080
-for database -> http://localhost:8080/rest/users/all
-for login -> http://localhost:8080/login
-for registration -> http://localhost:8080/register
+Clone the repo
+Navigate into the piggybit-master folder in an IDE (IntelliJ or Eclipse)
+Run the mainClass.java file as a java application
+Navigate to localhost:8084/register to begin registration.
